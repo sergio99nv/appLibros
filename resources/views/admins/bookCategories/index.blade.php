@@ -13,9 +13,10 @@
  
 <body>
     <div id="app">
-         <app-main></app-main>
+         <router-view></router-view>
+
     </div>
     
-    <script src="/js/admins/categories/app.js"></script>
+    <script src="/js/admins/bookCategories/app.js"></script>
 </body>
 </html>

@@ -6,14 +6,14 @@
              :create-data= "config.createData"
              :update-data= "config.updateData"
              :print-view-data="config.printViewData"
-             :extra-action-components="config.extraActionComponents"> 
+             :active-filter-search-prop="config.activeFilterSearchProp"
+             :links-action= "config.linksAction"> 
                 <thead   slot="fieldNames">
                     <tr>
-                        <th>Categoria</th>
-                        <th>descripcion</th>
-                        <th>Ver libros</th>
-                        <th>Ver Videos</th>
-                        <th>Acciones</th>
+                        <th class="text-sm-left">Categoría</th>
+                        <th class="text-sm-left">Ver libros</th>
+                        <th class="text-sm-left">Ver Videos</th>
+                        <th class="text-sm-left">Acciones</th>
                     </tr>
                 </thead>
              </crud>
@@ -73,11 +73,16 @@ import crud from '@pathRoot/crud/crud.vue'
                    // privateData : ["id"]
                      
                  },
-                 printViewData : ["name", "description"],
+                 printViewData : ["name"],
                  extraActionComponents : [{
                      name : "test",
                      props : ""
-                 }]
+                 }],
+                 linksAction : [ 
+                     {route:"/libros", name:"Ver libros"},
+                      {route:"/videos", name:"Ver Videos"}
+                 ],
+                 activeFilterSearchProp : true
                 }
              
         },

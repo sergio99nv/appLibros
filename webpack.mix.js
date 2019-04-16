@@ -24,7 +24,7 @@ mix.webpackConfig({
   }
 });
 
-mix.js('resources/js/admins/categories/app.js', 'public/js/admins/categories')
+mix.js('resources/js/admins/bookCategories/app.js', 'public/js/admins/bookCategories')
    //.sass('resources/sass/app.scss', 'public/css');
 
 //mix.js('resources/js/crud/app.js', 'public/js/crud')

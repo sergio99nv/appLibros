@@ -4,17 +4,13 @@ namespace appLibros\Http\Controllers\Admins;
 
 use Illuminate\Http\Request;
 use appLibros\Http\Controllers\Controller;
-use appLibros\Models\BookCategoryMdl;
-use Illuminate\Support\Facades\Validator;
 
-
-class BookCategoryCtrl extends Controller
+class BookCtrl extends Controller
 {
-    
     public function index()
     {
        // var_dump($data);
-        return view('admins/bookCategories/index');
+        return view('admins/books/categories');
     }
 
 
@@ -117,8 +113,5 @@ class BookCategoryCtrl extends Controller
            ]);
         }    
     }
-
-
-
 
 }

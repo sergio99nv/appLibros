@@ -42,8 +42,9 @@
 
         
         <table  v-if="dataCrud.length" class="v-datatable v-table theme--light">
+            
            <slot name="fieldNames"></slot>
-            <tbody>
+            <tbody v-if="activeFilterSearchProp">
                 <tr>
                     <td v-for="(inputItem, inputItemIndex) in printViewData" :key="inputItemIndex">
                         <v-text-field
@@ -55,6 +56,7 @@
                     </td>
                 </tr>
             </tbody>
+ 
             <tbody>
                 <tr  v-for="(itemData, itemDataIndex) in  searchDataResult" 
                        :key="itemData.id"
@@ -76,19 +78,24 @@
                             </td>   
                     </tbody>
                   
-              
-                    <td>
-                              
+                 
+                    <td v-for="(link, linkIndex) in linksAction" :key="'route' + linkIndex">
+                            
 
-                           <button title="editar" @click="loadUpdateComponent(itemData.id)" 
-                                    type="button" 
-                                    class="v-btn v-btn--flat v-btn--icon theme--light indigo--text">
-                                    <div class="v-btn__content">
-                                          <i aria-hidden="true" 
-                                            class="v-icon material-icons theme--light">edit
-                                          </i>
-                                    </div>
-                            </button>
+                        <router-link :to="link.route">{{  link.name }}</router-link>
+
+                    </td>
+                  
+                    <td>
+                        <button title="editar" @click="loadUpdateComponent(itemData.id)" 
+                                type="button" 
+                                class="v-btn v-btn--flat v-btn--icon theme--light indigo--text">
+                                <div class="v-btn__content">
+                                        <i aria-hidden="true" 
+                                        class="v-icon material-icons theme--light">edit
+                                        </i>
+                                </div>
+                        </button>
                            
                           <update
                             @updateDataEvent="updateDataEventHandler"
@@ -158,7 +165,15 @@
                  default: function(){
                      return []
                  }
-
+             },
+             linksAction:{
+                 required : true,
+                 type : Array
+             },
+             activeFilterSearchProp:{
+                 required : false,
+                 default : false,
+                 type : Boolean
              }
          },
          data(){
@@ -298,24 +313,23 @@
 
         computed:{
              searchDataResult(){
-                  
-                 return this.dataCrud.filter((item)=>{
+                if(!this.activeFilterSearchProp)  return this.dataCrud;
+           
+                const self = this;
+                let filtered = this.dataCrud;
+    
+                this.printViewData.forEach((fieldName)=>{
+                    filtered   = filtered
+                    .filter((item)=>{
+                        const itemSearch =  item[fieldName];
+                        return itemSearch 
+                                ? itemSearch.toLowerCase()
+                                .includes(self.searchFilters[fieldName].trim().toLowerCase())
+                                : filtered;   
+                    }); 
+                });
 
-                        const res =  this.printViewData.map((fieldName)=>{
-                            const existe =  item.name.toLowerCase().includes(this.searchFilters[fieldName].toLowerCase()) ;
-                           
-                            return  existe;
-              
-                        })
-                 
-                  
-                    return res[0];    
-
-                      //  return item.name.toLowerCase().includes(this.searchFilters["name"].toLowerCase());
-                      //return item.name.toLowerCase().includes(this.searchFilters["name"].toLowerCase())
-                       //return item.name.toLowerCase().includes(this.searchFilters["name"].toLowerCase())
-                        
-                 });
+                return filtered;
              }
         }
  

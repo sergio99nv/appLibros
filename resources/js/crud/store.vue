@@ -16,16 +16,28 @@
           </div>
           <div class="v-card__text" v-show="!sendingData">
               
-              <div v-for="(item, index) in fieldsStore" :key="index">
-                  <v-text-field
-                   required
-                    :error="form[item.field].error"
-                    :rules="formSended ? [form[item.field].rules.required] : []"
-                    v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
-                    v-model="form[item.field].value"
-                    :label="item.label"
-                  ></v-text-field>
-
+              <div   v-for="(item, index) in fieldsStore"    :key="index">
+                  <componet
+                        v-if="item.type=='text' || item.type=='textArea'"
+                        :is="chooseComponent(item.type)" 
+                        required
+                        :error="form[item.field].error"
+                        :rules="formSended ? [form[item.field].rules.required] : []"
+                        v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
+                        v-model="form[item.field].value"
+                        :label="item.label"
+                        >
+                  </componet>
+                  <div  v-else-if="item.type=='file'"> 
+                       
+                           <uploadFile 
+                                         
+                                       v-model="form[item.field].value"
+                                       :extensions="item.fileConfig.extensions"
+                                        :max-size="item.fileConfig.maxSize"  
+                                        :error-prop="form[item.field].error">
+                           </uploadFile>
+                  </div>
               </div>
           </div> 
 
@@ -71,15 +83,20 @@
    </div>
 </template>
 <script>
+   import typeComponents from "./typeComponents";
+   import uploadFile from "./uploadFile";
+
     export default {
          name : "store",
-
+         components : {uploadFile},
          props:{
             fieldsStore:{
                required : true,
                type : Array
             },
-            privateData:{
+         
+
+            fieldsHidden:{
                required : false,
                type : Array
             },
@@ -101,7 +118,9 @@
                 persistentModal : false,
                 sendingData : false,
                 form : {},
-                formSended : false
+                formSended : false,
+                typeComponents : typeComponents,
+   
             }
          },
          created(){
@@ -117,13 +136,17 @@
              */
             setFormFields(){
                this.fieldsStore.forEach(element => {
-                  this.$set(this.form, 
+                   this.$set(this.form, 
                            element.field, 
                            {  error:false, 
                               value:"",
-                              rules:  element.rules
+                              rules:  element.rules,
+                              type : element.type
                            });
+ 
                 });
+              
+                
             },
 
 
@@ -175,10 +198,21 @@
               let erros = 0;
               for (const key of Object.keys(objectForm)) {
                     const field= objectForm[key];
-                    if(field.value.trim().length<=0){
-                       field.error = true;
-                       ++erros;
+                    
+                    switch(field.type){
+                       case "file":
+                            if(!field.value){
+                                field.error = true;
+                                 ++erros;
+                            }
+                       break;
+                       default:
+                         if(field.value.trim().length<=0){
+                           field.error = true;
+                           ++erros;
+                         }
                     }
+                   
                }
 
                return erros <=0 ? true : false;
@@ -194,19 +228,20 @@
                this.formSended =  true;
                const objectForm = this.form;
                if(!this.validateData(objectForm)){
+                  console.log("campos pendientes")
                   return;
                }
   
               this.persistentModal = true;
-              const formData = new FormData();
+              let formData = new FormData();
 
               //obtenemos y adicionamos la data del formulario
               for (const key of Object.keys(objectForm)) {
                    formData.append(key,  objectForm[key].value);
                }
 
-              if(this.privateData && this.privateData.length){
-                 formData = this.appendPrivateData(formData);
+              if(this.fieldsHidden && this.fieldsHidden.length){
+                 formData = this.appendFieldsHidden(formData);
               }
               
               this.sendData(this.url,formData); 
@@ -215,14 +250,15 @@
 
 
             /**
-             * metodo para adicionar los valores de  privateData  
+             * metodo para adicionar los valores de  fieldsHidden  
              * al objeto q contiene los campos del formulario q se enviaran al server
              * 
              * @param {object}  formData  contiene los campos del formulario 
              * @return {object}  formData  retorna el objeto con los valorores adicionados
              */
-            appendPrivateData(formData) {
-                this.privateData.forEach( (element) => {
+            appendFieldsHidden(formData) {
+                this.fieldsHidden.forEach( (element) => {
+                   
                    formData.append(element.field, element.value);
                 });
 
@@ -278,6 +314,18 @@
              */
             inputHideError(field){
                 this.form[field].error =false;
+            },
+
+
+            /**
+             * metodo seleccionar el tipo de componente segun
+             *  el tipo de elemento del formulario, la busqueda se hace 
+             * en objeto importado  -typeComponents-
+             * @param {String} inputType
+             * @return {String} el tipo de component
+             */
+            chooseComponent(inputType){
+              return this.typeComponents[inputType] || ""
             }
 
          },

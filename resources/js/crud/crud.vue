@@ -31,7 +31,8 @@
                  :open-modal-prop="loadStoreComponent"
                 v-if="createData.fieldsStore && loadStoreComponent > 0"
                 :url="createData.url"
-                :fields-store="createData.fieldsStore">
+                :fields-store="createData.fieldsStore"
+                :fields-hidden="createData.fieldsHidden">
                
                  <template slot="title-main">
                     {{createData.titles.main || 'agregar'}} 
@@ -80,10 +81,7 @@
                   
                  
                     <td v-for="(link, linkIndex) in linksAction" :key="'route' + linkIndex">
-                            
-
-                        <router-link :to="link.route">{{  link.name }}</router-link>
-
+                        <router-link :to="link.route + '/' + getFieldFromItem(itemData, link.param)">{{  link.name }}</router-link>
                     </td>
                   
                     <td>
@@ -142,7 +140,7 @@
          name : "crud",
          components : {store, update},
          props:{
-             urlsData:{
+             initData:{
                  required : true,
                  type : Object
              },
@@ -167,7 +165,7 @@
                  }
              },
              linksAction:{
-                 required : true,
+                 required : false,
                  type : Array
              },
              activeFilterSearchProp:{
@@ -194,7 +192,7 @@
         },
         mounted() {
 
-            this.getData(this.urlsData.getAll);
+            this.getData(this.initData.url, this.initData.params);
             
         },
         methods:{
@@ -203,17 +201,26 @@
              *  obtenmos la data del server
              * 
              *  @param { string} url  La url de donde se obtendran los datos
+             *  @param { object} params   
              */
-           getData(url){
+           getData(url, params){
                 const token = document.head.querySelector('meta[name="csrf-token"]');
                 if(token)  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 
                // const url = "/admins/users/getData";
-                axios.post(url).
+                axios.post(url, params).
                 then((response) => {
-                    //console.log(response.data)  
-                    this.dataCrud = response.data
-                    this.setSearchFilters();
+                    const responseData = response.data;
+                   
+                    if(responseData.error === false){
+                         this.dataCrud = responseData.data
+                         this.setSearchFilters();
+                          
+                    
+                    }else{
+                         throw new Error('un error al intetar guardar los datos');
+                    }
+   
                      
                 }).catch((err)=>{
                     console.log(err)
@@ -289,6 +296,18 @@
                 }else{
                     ++this.loadedUpdateComponentData[idString];
                 }      
+            },
+
+
+            /**
+             * metodo para obtener un campo en especifico de un objecto
+             * 
+             * @param {Object} item  el objeto donde buscaremos el campo
+             * @param {String} field el campo q buscaremos
+             * @return {String}  retornamos el campo
+             */
+            getFieldFromItem(item, field){
+                  return item[field] || '';
             }
 
            

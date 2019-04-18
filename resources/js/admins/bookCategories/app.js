@@ -5,7 +5,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('../../bootstrap');
+require('@pathRoot/bootstrap');
 
 window.Vue = require('vue');
 
@@ -20,17 +20,26 @@ import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)
  
+ 
 
+ 
 const routes = [
-    { path: '/', component:  Vue.component('app-main', require('./appMain').default) },
+    {
+       path: '/', 
+       component:  Vue.component('categories', require('./categories').default)
+    },
+
+    {
+      path: '/libros/:bookCategoryId', 
+      component:  Vue.component('books', require('./books').default),
+      props:true 
+    }
     
   ]
-  
-  // 3. Create the router instance and pass the `routes` option
-  // You can pass in additional options here, but let's
-  // keep it simple for now.
+ 
+
   const router = new VueRouter({
-    routes // short for `routes: routes`
+    routes
   })
   
 

@@ -39,13 +39,28 @@ Route::group(['prefix'=>'admins'], function(){
         Route::post('/getAll',  'Admins\AdminCtrl@getAll');
     });
 
-    Route::group(['prefix'=>'books'], function(){
 
-        Route::group(['prefix'=>'categories'], function(){
+
+    Route::group(['prefix'=>'bookCategories'], function(){
+       
+        Route::group(['prefix'=>'/'], function(){
             Route::get('/',  'Admins\BookCategoryCtrl@index');
             Route::post('/getAll',  'Admins\BookCategoryCtrl@getAll');
             Route::post('/store',  'Admins\BookCategoryCtrl@store');
             Route::post('/update',  'Admins\BookCategoryCtrl@update');
        });
+
+
+       Route::group(['prefix'=>'/books'], function(){
+        Route::get('/',  'Admins\BookCtrl@index');
+        Route::post('/getAll',  'Admins\BookCtrl@getAll');
+        Route::post('/store',  'Admins\BookCtrl@store');
+        Route::post('/update',  'Admins\BookCtrl@update');
+       });
+
+
+
+
+
     });
 });

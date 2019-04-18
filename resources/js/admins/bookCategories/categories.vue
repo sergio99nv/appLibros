@@ -2,7 +2,7 @@
     <div>
        <v-app>    
         <crud
-             :urls-data = "config.urlsData"
+             :init-data = "config.initData"
              :create-data= "config.createData"
              :update-data= "config.updateData"
              :print-view-data="config.printViewData"
@@ -23,30 +23,27 @@
 
 <script>
 
-
-import test from "./test";
+ 
 import crud from '@pathRoot/crud/crud.vue'
  
- 
- Vue.component('test', test);
-   
     export default {
-         components : {test, crud},
-         name : "app-main",
+          name : "categories",
+         components : {crud},
          data(){
             return{
                 config : {}
             }
          },
          created() {
+             const prefixUrl =  "/admins/bookCategories";
+
              this.config = {
-                 urlsData : {
-                     getAll : "/admins/books/categories/getAll",
-                     
-                     update : "/admins/books/categories/update",
-                 },
+                  initData : {
+                     url :   prefixUrl + "/getAll",   
+                  },
+
                  createData : {
-                    url : "/admins/books/categories/store",
+                    url : prefixUrl + "/store",
                     fieldsStore : [{field: "name",
                                  label:"categoría", 
                                  input:"input",
@@ -58,7 +55,7 @@ import crud from '@pathRoot/crud/crud.vue'
                      
                  },
                   updateData : {
-                    url : "/admins/books/categories/update",
+                    url :  prefixUrl +  "/update",
                     fieldsUpdate : [
                                      {
                                         field: "name",
@@ -74,13 +71,10 @@ import crud from '@pathRoot/crud/crud.vue'
                      
                  },
                  printViewData : ["name"],
-                 extraActionComponents : [{
-                     name : "test",
-                     props : ""
-                 }],
+
                  linksAction : [ 
-                     {route:"/libros", name:"Ver libros"},
-                      {route:"/videos", name:"Ver Videos"}
+                     {route:"/libros", name:"Ver libros", param : "id"},
+                     {route:"/videos", name:"Ver Videos", param : "id"}
                  ],
                  activeFilterSearchProp : true
                 }

@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class BookCategoryMdl extends Model
 {
-    //
-
-    protected $primaryKey = "bookCategoryId";
-
+    
     protected $table = 'bookCategories';
+    protected $primaryKey = "bookCategoryId";
+    
     public $timestamps = false;
 }

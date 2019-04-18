@@ -21,7 +21,10 @@ class BookCategoryCtrl extends Controller
     public function getAll()
     {
         $data  =  BookCategoryMdl::all('bookCategoryId as id','name', 'userCreateId', 'state');
-        return response()->json($data);
+        return response()->json([
+            "data" => $data,
+            'error' =>  false
+        ]);
     }
 
  

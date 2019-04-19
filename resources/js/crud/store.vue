@@ -1,43 +1,71 @@
-<style>
-
-</style>
+ <style>
+   .error-server{
+      padding-left: 16px;
+      padding-right: 16px;
+   }
+ </style>
 <template>
    <div>
     
-      <v-dialog
-        v-model="dialog"
-        :persistent="persistentModal"
-        max-width="450">
+     
 
         <div class="v-card v-sheet theme--light">
             
           <div class="v-card__title headline">
              <slot name="title-main"></slot>
+             
           </div>
-          <div class="v-card__text" v-show="!sendingData">
+           <div class="error-server  red--text" v-if="errorForm.value">
+                  {{
+                     errorForm.msg
+                  }}
+             </div>
+         
+          <div class="v-card__text store-dialog__form" v-show="!sendingData">
               
-              <div   v-for="(item, index) in fieldsStore"    :key="index">
+              <div class="store-dialog__form__item"  v-for="(item, index) in fieldsStore"    :key="index">
                   <componet
-                        v-if="item.type=='text' || item.type=='textArea'"
+                        v-if="item.type=='text'"
                         :is="chooseComponent(item.type)" 
                         required
                         :error="form[item.field].error"
+                        :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
                         :rules="formSended ? [form[item.field].rules.required] : []"
                         v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
                         v-model="form[item.field].value"
                         :label="item.label"
                         >
                   </componet>
-                  <div  v-else-if="item.type=='file'"> 
-                       
-                           <uploadFile 
-                                         
-                                       v-model="form[item.field].value"
-                                       :extensions="item.fileConfig.extensions"
-                                        :max-size="item.fileConfig.maxSize"  
-                                        :error-prop="form[item.field].error">
-                           </uploadFile>
-                  </div>
+
+
+                   <v-textarea
+                        :auto-grow="true"
+                        rows="1"
+                        v-else-if="item.type=='textArea'"
+                        required
+                        :error="form[item.field].error"
+                        :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
+                        :rules="formSended ? [form[item.field].rules.required] : []"
+                        v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
+                        v-model="form[item.field].value"
+                        :label="item.label"
+                        >
+                  </v-textarea>
+                  
+                  <uploadFile  v-else-if="item.type=='file' || item.type=='image'"
+                              :show-img-miniature="item.type=='image' ? true : false"
+                              :type="item.type"  
+                              :label="item.label"
+                              v-model="form[item.field].value"
+                              :extensions="item.fileConfig.extensions"
+                               v-on="form[item.field].error ? { '~inputChange': () => inputHideError(item.field) } : {}"
+                              :max-size="item.fileConfig.maxSize"  
+                               :server-error-msg="formSended && form[item.field].serverErrorMsg.length ? form[item.field].serverErrorMsg : ''"
+                              :error-prop="form[item.field].error">
+                  </uploadFile>
+                
+                  
+                   
               </div>
           </div> 
 
@@ -47,22 +75,24 @@
                      color="primary"
                      indeterminate
                   ></v-progress-circular>
+                  <div>
+                     guardando ...
+                  </div>
 
           </div>
           
            <div class="v-card__actions">
                 
                 <div class="spacer"></div>
-
-               <button 
-                 :disabled="sendingData"
-                  @click="dialog = false"
-                  type="button"
-                  class="v-btn v-btn--flat theme--light primary--text">
-                     <div class="v-btn__content">
-                           cerrar
-                     </div>
-               </button>
+ 
+                <button v-if="!sendingData" type="button"
+                      class="v-btn v-btn--flat theme--light primary--text  close-modal-btn">
+                         <div class="v-btn__content">
+                               <slot  name="close-modal">
+                                </slot>
+                         </div> 
+               </button> 
+             
 
                 <button :disabled="sendingData"
                   @click="getDataSend()" 
@@ -77,8 +107,7 @@
             </div>
             
          </div>
-    
-      </v-dialog>
+   
     
    </div>
 </template>
@@ -105,17 +134,15 @@
                type : String
             },
 
-            openModalProp:{
-               required : true,
-               type : Number,
-               defaults : 0
-            }
+            
          },
 
          data(){
             return{
-                dialog : false,
-                persistentModal : false,
+                errorForm : {
+                   value : false,
+                   msg : ""
+                },
                 sendingData : false,
                 form : {},
                 formSended : false,
@@ -124,7 +151,7 @@
             }
          },
          created(){
-            this.dialog = true;
+          
             this.setFormFields();
    
          },
@@ -140,6 +167,7 @@
                            element.field, 
                            {  error:false, 
                               value:"",
+                              serverErrorMsg : "",
                               rules:  element.rules,
                               type : element.type
                            });
@@ -171,8 +199,11 @@
                         this.dialog =  false;
                     }else{
                         if(responseData.dataError){
+
+                           this.setFieldErrorServer(responseData.dataError)
+                            this.setErrorForm(true, "revise los campos del formulario")
                            console.log(responseData.dataError)
-                         
+ 
                         }else{
                            throw new Error('un error al intetar guardar los datos');
                         }        
@@ -182,6 +213,8 @@
                 })
                 .catch(error => {
                      this.resetSendingProperties();
+                     this.setErrorForm(true, "revise los campos del formulario")
+                     
                      console.log(error)
                 });
             },
@@ -199,8 +232,11 @@
               for (const key of Object.keys(objectForm)) {
                     const field= objectForm[key];
                     
+                    if(field.rules.required === false) continue;
+
                     switch(field.type){
                        case "file":
+                       case "image":
                             if(!field.value){
                                 field.error = true;
                                  ++erros;
@@ -219,6 +255,20 @@
             },
 
 
+         setFieldErrorServer(dataServer){
+             for (const field of Object.keys(dataServer)) {
+                  const item = dataServer[field];
+
+                  if(this.form[field]){
+                      this.form[field].error = true;
+                      this.form[field].serverErrorMsg = item[0];  
+                  }
+                 
+                    
+             }
+
+         },
+
 
             /**
              * metodo para obtener los campos del formulario, utiliza el metodo --validateData--
@@ -228,15 +278,14 @@
                this.formSended =  true;
                const objectForm = this.form;
                if(!this.validateData(objectForm)){
-                  console.log("campos pendientes")
-                  return;
-               }
-  
-              this.persistentModal = true;
+                   return;
+               } 
               let formData = new FormData();
 
               //obtenemos y adicionamos la data del formulario
               for (const key of Object.keys(objectForm)) {
+                 const fieldItem =  objectForm[key];
+                  if(fieldItem.rules.required === false && !fieldItem.value) continue;
                    formData.append(key,  objectForm[key].value);
                }
 
@@ -300,10 +349,14 @@
              * 
              */
             resetSendingProperties(){
-                this.persistentModal = false;
                 this.sendingData = false;
             },
+            
 
+            setErrorForm(error, msg){
+               this.errorForm.value = error;
+               this.errorForm.msg = msg
+            },
 
 
             /**
@@ -314,6 +367,7 @@
              */
             inputHideError(field){
                 this.form[field].error =false;
+                this.form[field].serverErrorMsg = "";
             },
 
 
@@ -331,9 +385,7 @@
          },
 
           watch:{
-            openModalProp(){
-               this.dialog = true
-            }
+            
          }
         
     }

@@ -1,5 +1,21 @@
+<style>
+       .main-wrapper{
+             max-width: 920px;
+             margin: 0 auto;
+             padding: 1rem 0 3rem 0;
+         }
+
+         body{
+             background-color: #efefefd9;
+         }
+
+       .theme--light.application{
+           background-color: transparent;
+       }
+</style>
+
 <template>
-    <div>
+    <div class="main-wrapper">
        <v-app>    
         <crud
              :init-data = "config.initData"

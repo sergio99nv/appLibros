@@ -6,6 +6,12 @@
         left: 0;
         z-index: 100;
     }
+
+    .close-modal-btn{
+        width: auto;
+        padding: 0 0;
+        height: auto;
+    }
 </style>
 
 <template>
@@ -21,28 +27,37 @@
         </div>
         
         <div>
-             <button  @click="()=> ++loadStoreComponent" type="button" class="v-btn theme--dark primary">
+             <button  @click="()=>  loadStoreComponent= !loadStoreComponent" type="button" class="v-btn theme--dark primary">
                 <div class="v-btn__content">
                         {{createData.titles.btn || 'agregar'}}
                 </div>
             </button>
-            <store
-                @addNewDataEvent="addNewDataEventHandler"
-                 :open-modal-prop="loadStoreComponent"
-                v-if="createData.fieldsStore && loadStoreComponent > 0"
-                :url="createData.url"
-                :fields-store="createData.fieldsStore"
-                :fields-hidden="createData.fieldsHidden">
-               
-                 <template slot="title-main">
-                    {{createData.titles.main || 'agregar'}} 
-                </template> 
-              
-            </store>
+             <v-dialog
+                 v-if="loadStoreComponent"
+                content-class="store-dialog"
+                v-model="loadStoreComponent"
+                :persistent = "true"
+                >
+                <store
+                    @addNewDataEvent="addNewDataEventHandler"
+                    v-if="createData.fieldsStore "
+                    :url="createData.url"
+                    :fields-store="createData.fieldsStore"
+                    :fields-hidden="createData.fieldsHidden">
+                    <template slot="title-main">
+                        {{createData.titles.main || 'agregar'}} 
+                    </template> 
+
+                     <template slot="close-modal">
+                             <div   class="" @click="()=>  loadStoreComponent= false" >cerrar</div>
+                     </template>
+                
+                </store> 
+               </v-dialog>  
         </div>
 
         
-        <table  v-if="dataCrud.length" class="v-datatable v-table theme--light">
+        <table  v-if="dataCrud.length" class="v-datatable v-table theme--light elevation-1">
             
            <slot name="fieldNames"></slot>
             <tbody v-if="activeFilterSearchProp">
@@ -85,7 +100,9 @@
                     </td>
                   
                     <td>
-                        <button title="editar" @click="loadUpdateComponent(itemData.id)" 
+                        <button title="editar" 
+                                 
+                                @click="loadUpdateComponentFn(itemData.id)" 
                                 type="button" 
                                 class="v-btn v-btn--flat v-btn--icon theme--light indigo--text">
                                 <div class="v-btn__content">
@@ -94,16 +111,23 @@
                                         </i>
                                 </div>
                         </button>
+
+                         <v-dialog
+                             v-if="loadUpdateComponent[itemData.id]"
+                            content-class="store-dialog"
+                            v-model="loadUpdateComponent[itemData.id]"
+                            :persistent = "false"
+                            >
                            
                           <update
                             @updateDataEvent="updateDataEventHandler"
-                            v-if="updateData.fieldsUpdate &&   loadedUpdateComponentData[itemData.id] > 0"
+                            v-if="updateData.fieldsUpdate"
                             :url="updateData.url "
                             :updated-id="itemData.id"
                             :items-from-crud="itemData"
                             :items-from-crud-index="itemDataIndex"
                             :fields-update="updateData.fieldsUpdate"
-                            :open-modal-prop=" loadedUpdateComponentData[itemData.id]"
+                            :open-modal-prop=" loadUpdateComponent[itemData.id]"
                             >
                         
                             <template slot="title-btn">
@@ -118,9 +142,10 @@
                             <template slot="title-main">
                                 {{updateData.titles.main || 'agregar'}}  
                             </template>
-                        
                        </update> 
-                        
+
+
+                    </v-dialog>    
                     </td>
                     
                 </tr>
@@ -187,7 +212,7 @@
 
                 },
                 loadStoreComponent : 0,
-                loadedUpdateComponentData:{}
+                loadUpdateComponent:{}
             }
         },
         mounted() {
@@ -237,6 +262,7 @@
              * @param {Object} data la data recibida 
              */
             addNewDataEventHandler(data){
+                this.loadStoreComponent = false
                 this.dataCrud.push(data)
                  this.actionMsg.msg = "datos guardados";
                  this.actionMsg.show = true;
@@ -288,13 +314,15 @@
                 console.log(value, item)
             },
 
-            loadUpdateComponent(id){
+
+            loadUpdateComponentFn(id){
                 const idString =  id.toString();   
-                if(!this.loadedUpdateComponentData[idString]){
-                    this.loadedUpdateComponentData  = {} 
-                    this.$set(this.loadedUpdateComponentData,idString, 1)   
+
+                if(!this.loadUpdateComponent[idString]){
+                    this.loadUpdateComponent  = {} 
+                    this.$set(this.loadUpdateComponent,idString, true)   
                 }else{
-                    ++this.loadedUpdateComponentData[idString];
+                    this.loadUpdateComponent[idString] = !this.loadUpdateComponent[idString];
                 }      
             },
 

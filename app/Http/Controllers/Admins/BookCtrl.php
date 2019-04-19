@@ -40,6 +40,7 @@ class BookCtrl extends Controller
                         'author', 
                         'bookYear', 
                         'file',
+                        'cover',
                         'userCreateId',
                         'state'
                     ]);
@@ -69,8 +70,7 @@ class BookCtrl extends Controller
                  "description" => "required|max:10000",
                  "author" => "required|max:10000",
                  "file" =>  "required|mimes:pdf|max:10000",
-
-                
+                 "cover" =>  "nullable|mimes:jpeg,jpg,png|max:10000",
                 ];
 
         $validation= Validator::make($request->all(),$rules);
@@ -82,17 +82,30 @@ class BookCtrl extends Controller
            ]);;
         }
         
-
+       
+       
+        $fileName = "123" . "." . $request->file('file')->extension();
+        $coverName = "";
         try {
-            $path = $request->file('file')->store('adminBooks');
+
+           
+            $request->file('file')->storeAs('adminBooks', $fileName);
+
+            if ($request->has('cover')){
+                $coverName = "123" . "." . $request->file('cover')->extension();
+                $request->file('cover')->storeAs('bookMiniatures', $coverName);
+            }
+            
 
             $bookCategoryMdl = new BookMdl;
             $bookCategoryMdl->bookCategoryId = $request->bookCategoryId;
             $bookCategoryMdl->name = $request->name;
             $bookCategoryMdl->description = $request->description;
             $bookCategoryMdl->author = $request->author;
-            $bookCategoryMdl->file = "file";
-            $bookCategoryMdl->bookYear ="2019-01-01";
+
+            $bookCategoryMdl->file = $fileName;
+            $bookCategoryMdl->cover = $coverName;
+            $bookCategoryMdl->bookYear = "2019-01-01";
 
             $bookCategoryMdl->save();
     
@@ -113,8 +126,9 @@ class BookCtrl extends Controller
 
         } catch (\Exception  $e) {
             return response()->json([
-               'msg' => "erro al intentar guardar los datos",
-               'error' =>  true
+               'msg' => "error al intentar guardar los datos",
+               'error' =>  true,
+               "x" => $e->getMessage()
            ]);
         }    
     }

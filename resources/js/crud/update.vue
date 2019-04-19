@@ -1,37 +1,73 @@
-<style>
-
-</style>
+ <style>
+   .error-server{
+      padding-left: 16px;
+      padding-right: 16px;
+   }
+ </style>
 <template>
    <div>
+    
      
-     <!-- <span @click.stop="dialog = true">
-           <slot name="title-btn">
-          </slot>
-     </span> -->
-
-      <v-dialog
-        v-model="dialog"
-        :persistent="persistentModal"
-        max-width="450">
 
         <div class="v-card v-sheet theme--light">
             
           <div class="v-card__title headline">
              <slot name="title-main"></slot>
+             
           </div>
-          <div class="v-card__text" v-show="!sendingData">
+           <div class="error-server  red--text" v-if="errorForm.value">
+                  {{
+                     errorForm.msg
+                  }}
+             </div>
+         
+          <div class="v-card__text store-dialog__form" v-show="!sendingData">
               
-               <div v-for="(item, index) in fieldsUpdate" :key="index">
-                  <v-text-field
-                   required
-                    :error="form[item.field].error"
-                    :rules="formSended ? [form[item.field].rules.required] : []"
-                    v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
-                    v-model="form[item.field].value"
-                    :label="item.label"
-                  ></v-text-field>
+              <div class="store-dialog__form__item"  v-for="(item, index) in fieldsUpdate"    :key="index">
+                  <componet
+                        v-if="item.type=='text'"
+                        is="v-text-field" 
+                        required
+                        :error="form[item.field].error"
+                        :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
+                        :rules="formSended ? [form[item.field].rules.required] : []"
+                        v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
+                        v-model="form[item.field].value"
+                        :label="item.label"
+                        >
+                  </componet>
 
-              </div>  
+
+                   <v-textarea
+                        :auto-grow="true"
+                        rows="1"
+                        v-else-if="item.type=='textArea'"
+                        required
+                        :error="form[item.field].error"
+                        :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
+                        :rules="formSended ? [form[item.field].rules.required] : []"
+                        v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
+                        v-model="form[item.field].value"
+                        :label="item.label"
+                        >
+                  </v-textarea>
+                  
+                  <uploadFile  v-else-if="item.type=='file' || item.type=='image'"
+                              :show-img-miniature="item.type=='image' ? true : false"
+                              :type="item.type"  
+                              :label="item.label"
+                              :isUpdate="true"
+                              v-model="form[item.field].value"
+                              :extensions="item.fileConfig.extensions"
+                               v-on="form[item.field].error ? { '~inputChange': () => inputHideError(item.field) } : {}"
+                              :max-size="item.fileConfig.maxSize"  
+                               :server-error-msg="formSended && form[item.field].serverErrorMsg.length ? form[item.field].serverErrorMsg : ''"
+                              :error-prop="form[item.field].error">
+                  </uploadFile>
+                
+                  
+                   
+              </div>
           </div> 
 
           <div class="v-card__text  text-xs-center" v-if="sendingData">
@@ -40,21 +76,24 @@
                      color="primary"
                      indeterminate
                   ></v-progress-circular>
+                  <div>
+                     guardando ...
+                  </div>
 
           </div>
           
-           <div class="v-card__actions">         
-               <div class="spacer"></div>
-
-                <button 
-                 :disabled="sendingData"
-                  @click="dialog = false"
-                  type="button"
-                  class="v-btn v-btn--flat theme--light primary--text">
-                     <div class="v-btn__content">
-                           cerrar
-                     </div>
-               </button>
+           <div class="v-card__actions">
+                
+                <div class="spacer"></div>
+ 
+                <button v-if="!sendingData" type="button"
+                      class="v-btn v-btn--flat theme--light primary--text  close-modal-btn">
+                         <div class="v-btn__content">
+                               <slot  name="close-modal">
+                                </slot>
+                         </div> 
+               </button> 
+             
 
                 <button :disabled="sendingData"
                   @click="getDataSend()" 
@@ -64,19 +103,24 @@
                            guardar
                      </div>
                </button>
+
               
             </div>
             
          </div>
-    
-      </v-dialog>
+   
     
    </div>
 </template>
+
+
+
 <script>
+    import uploadFile from "./uploadFile";
+
     export default {
          name : "update",
-        
+        components : {uploadFile},
          props:{
              updatedId: {
                 required : true,
@@ -104,26 +148,23 @@
                type : Boolean,
                defaults : false
             },
-            openModalProp:{
-               required : true,
-               type : Number,
-               defaults : 0
-            }
+             
 
          },
 
          data(){
             return{
-                dialog : false,
+             
                 persistentModal : false,
                 sendingData : false,
                 form : {},
-                formSended : false
+                formSended : false,
+                errorForm : ""
             }
          },
          created(){
             
-            this.dialog = true
+         
             if(Object.entries(this.itemsFromCrud).length > 0 && this.itemsFromCrud.constructor === Object){
                let data= this.setFieldFromCrud();
                this.setFormFields(data);
@@ -178,7 +219,7 @@
                     if(responseData.error===false){
                         this.updateDataEvent(responseData.dataEmit)
                         //this.resetFormData(this.form);
-                        this.dialog =  false;
+                      
                     }else{
                         if(responseData.dataError){
                            console.log(responseData.dataError)
@@ -295,11 +336,7 @@
             }
 
          },
-         watch:{
-            openModalProp(){
-               this.dialog = true
-            }
-         }
+         
         
     }
 </script>

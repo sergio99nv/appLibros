@@ -5,51 +5,102 @@
             
         }
 
+        
+
+        
         .file-action{
            padding: 1rem 1rem;
            background-color: ghostwhite;
            border: 1.5px dashed #888282;
-           display: flex;
-           align-items: center;
+           
         }
 
         .file-action button{
-            margin-right: 1rem;
+            margin-right: 1.1rem;
         }
+
+        .file-action__col--msg strong{
+            display: block;
+        }
+
+        .file-action__col--remove{
+            margin-left: 1rem;
+        }
+
+        .file-action__col--remove i{
+            cursor: pointer;
+        }
+ 
+        
+        
 
 
 </style>
 <template>
     <div class="file-wrapper">
 
-       <input v-show="false" ref="inputUpload"  type="file" @change="inputChange($event)" >
+       <input  hidden ref="inputFile"  type="file" @change="inputChange($event)" >
        
-        <div class="file-action">
-            <button @click="$refs.inputUpload.click()"
-                  type="button"
-                   class="v-btn green darken-1">
-                   <div class="white--text v-btn__content">
-                        <span  v-if="fileUploadedChecked">
-                       cambiar archivo  
-                        </span>
-                        <span  v-else>
-                        subir archivo
-                        </span>
-                   </div>          
-            </button>
-           
-            <strong class="green--text" v-if="fileUploadedChecked">
-                archivo subido
-            </strong>
+        <div class="file-action layout row">
+            
+            <div   v-if="!fileUploadedChecked">
+                <button
+                   
+                     @click="$refs.inputFile.click()"
+                   class="v-btn blue-grey darken-2">
+                   <span class="white--text v-btn__content">
+                        subir  {{label}}  
 
-              <div class="red--text" v-show="errorProp || error.value" v-if="!fileUploadedChecked">
-               {{
-                   error.msg || "suba el archivo"
-               }} 
-             </div>
+                         <i 
+                            class="v-icon v-icon--right material-icons theme--light">cloud_upload
+                        </i>
+                   </span>          
+                 </button>
+                <div class="red--text text-xs-center" v-show="serverErrorMsg.length  || error.value || errorProp">
+                        {{
+                                serverErrorMsg  || error.msg   || "suba el archivo"
+                        }} 
+                </div>
+
+                  
+              
+            </div>
+ 
            
+           <div  v-if="fileUploadedChecked"  class="file-action__uploaded  layout row">
+
+                <button
+                        @click="$refs.inputFile.click()"
+                        class="v-btn green darken-1">
+                            <span class="white--text v-btn__content">
+                                    {{label}}   subido
+                                     <i 
+                                        class="v-icon v-icon--right material-icons theme--light">cloud_upload
+                                    </i>
+                            </span>     
+                </button>   
+
+
+                 <div  v-if="type=='image'" >
+                     <img
+                  v-show="imgMiniatureSrc.length"
+                 class="file-action__imageMiniature" 
+                            :src="imgMiniatureSrc">
+                 
+                 </div>
+                
+                 
+
+                       
+           </div>
+
+            
+            
         </div>
-      
+
+        
+    
+         
         
     </div>
 </template>
@@ -67,6 +118,20 @@ export default {
               type : Number,
               required : true
           },
+          type: {
+                type : String,
+                required : true,
+                defaults : "Archivo"
+          },
+          showImgMiniature:{
+              type  : Boolean,
+              require : false,
+              default : false
+          },
+         label:{
+             required : true,
+             type : String 
+         },
          value:{
              required : true
          },
@@ -74,63 +139,112 @@ export default {
              type : Boolean,
              required : true,
              defaults: false
+         },
+         serverErrorMsg :{
+             type : String,
+             required : true,
+             default : ""
+         },
+         isUpdate : {
+             type : Boolean,
+             required : false,
+             defaults : false
          }
 
+
       },
-      name : "store",
+      name : "upload-file",
         data(){
             return{
-              inputVal: this.value,
+              inputFile: this.value,
               error : {
                   value : false,
                   msg : ""
               },
-              fileOk :  false
+              fileOk :  false,
+              imgMiniatureSrc : ""
           }
       }, 
+      created(){
+           if(this.isUpdate && this.value){
+               this.inputFile = this.value;
+               this.fileOk =  true;
+               this.imgMiniatureSrc =   this.value;
+
+           }
+      },
       methods:{
           inputChange(event){
              const input =event.target;
               if(!input.files.length) return;
+                
 
+                this.$emit("inputChange", true);    
                 this.setError(false, "");
                 this.fileOk = false
-                this.inputVal = ""
-               
-                const inputFile = input.files[0]
+                this.inputFile = ""
+                this.imgMiniatureSrc = ""
+
+                 const inputFile = input.files[0];
+                 this.inputFile = inputFile;
+
                 //validamos la extension
                 if(!FileHelper.validateExt(inputFile, this.extensions)){
-                    input.value = "";
+                   // input.value = "";
                     this.setError(true, "extension no permitida")
                     return;
                 }
                 //validamos el peso del archivo
                 if(!FileHelper.validateSize(inputFile, this.maxSize)){
-                    input.value = "";
+                   // input.value = "";
                     this.setError(true, "peso no valido")
                     return;
                 }
                
-               
-               this.inputVal = inputFile
-               this.fileOk = true
+              
+               this.fileOk = true;
+
+              if(this.type==="image"){
+                  this.imgReader(inputFile);
+              }
+              
           },
+ 
+
+            imgReader(inputFile){
+                    const reader = new FileReader();
+                    reader.readAsDataURL(inputFile);
+                    reader.onload =  (e)=>{
+                        this.imgMiniatureSrc = e.target.result;
+                    }
+              },
           
 
           setError(error, msg){
               this.error.value = error;
               this.error.msg = msg;
+          },
+
+          /**
+           * metodo para limpiar  el inpit file
+           */
+          cleanInputFile(){
+                this.$refs["inputFile"].value = ""
+                this.inputFile = "",
+                this.imgMiniatureSrc = "";
+                this.fileOk = false;
+                 this.setError(false, "")
           }
 
       },
        watch: {
-            inputVal(val) {
+            inputFile(val) {
                 this.$emit('input', val);
             },
      },
       computed:{
             fileUploadedChecked(){
-                return this.fileOk && this.inputVal;
+                return this.fileOk && this.inputFile;
             }
       }
         

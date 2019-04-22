@@ -1,22 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
 
-    
-    <title>Document</title>
-</head>
- 
-<body>
-    <div id="app">
+@extends('admins/layouts.app')
+@section('title', 'categorias')
+
+@section('content')
+      <div id="app">
          <router-view></router-view>
-
     </div>
-    
+@endsection
+
+
+@section('scripts')
+<script>
+        window.AppBookHelper = {};
+        window.AppBookHelper.fileConfig =  <?php echo json_encode($fileConfig, JSON_HEX_TAG); ?>; 
+    </script>
     <script src="/js/admins/bookCategories/app.js"></script>
-</body>
-</html>
+@endsection
+ 

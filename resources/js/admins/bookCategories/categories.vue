@@ -1,23 +1,36 @@
-<style>
-       .main-wrapper{
+<style scoped>
+      
+        .main-wrapper{
              max-width: 920px;
              margin: 0 auto;
              padding: 1rem 0 3rem 0;
          }
-
-         body{
-             background-color: #efefefd9;
-         }
+         
 
        .theme--light.application{
            background-color: transparent;
        }
+
+  
+        
+      
 </style>
 
+<style>
+
+  @media screen and (min-width:600px){
+    .main-wrapper--cat  .v-dialog{
+        max-width: 600px;
+     }
+   }
+</style>
+
+
 <template>
-    <div class="main-wrapper">
+    <div class="main-wrapper main-wrapper--cat">
        <v-app>    
         <crud
+
              :init-data = "config.initData"
              :create-data= "config.createData"
              :update-data= "config.updateData"

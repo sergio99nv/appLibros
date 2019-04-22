@@ -26,7 +26,7 @@
             </v-card>       
         </div>
         
-        <div>
+        <div v-if="createData">
              <button  @click="()=>  loadStoreComponent= !loadStoreComponent" type="button" class="v-btn theme--dark primary">
                 <div class="v-btn__content">
                         {{createData.titles.btn || 'agregar'}}
@@ -57,10 +57,10 @@
         </div>
 
         
-        <table  v-if="dataCrud.length" class="v-datatable v-table theme--light elevation-1">
+        <table  class="v-datatable v-table theme--light elevation-1">
             
            <slot name="fieldNames"></slot>
-            <tbody v-if="activeFilterSearchProp">
+            <tbody v-if="dataCrud.length && activeFilterSearchProp">
                 <tr>
                     <td v-for="(inputItem, inputItemIndex) in printViewData" :key="inputItemIndex">
                         <v-text-field
@@ -73,7 +73,7 @@
                 </tr>
             </tbody>
  
-            <tbody>
+            <tbody  v-if="dataCrud.length">
                 <tr  v-for="(itemData, itemDataIndex) in  searchDataResult" 
                        :key="itemData.id"
                        :ref="'refItemData' + itemData.id"> 
@@ -99,7 +99,7 @@
                         <router-link :to="link.route + '/' + getFieldFromItem(itemData, link.param)">{{  link.name }}</router-link>
                     </td>
                   
-                    <td>
+                    <td v-if="updateData">
                         <button title="editar" 
                                  
                                 @click="loadUpdateComponentFn(itemData.id)" 
@@ -149,7 +149,14 @@
                     </td>
                     
                 </tr>
-             </tbody>    
+             </tbody>   
+              <tbody v-if="!dataCrud.length">
+                <tr>
+                   <td>
+                       <h3> Sin registros</h3>
+                   </td>
+                </tr>
+            </tbody> 
         </table> 
  
     </div>
@@ -243,7 +250,7 @@
                           
                     
                     }else{
-                         throw new Error('un error al intetar guardar los datos');
+                         throw new Error('error');
                     }
    
                      

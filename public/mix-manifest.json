@@ -1,3 +1,10 @@
 {
-    "/js/admins/bookCategories/app.js": "/js/admins/bookCategories/app.js"
+    "/js/admins/bookCategories/app.js": "/js/admins/bookCategories/app.js",
+    "/js/admins/login/app.js": "/js/admins/login/app.js",
+    "/js/admins/users/app.js": "/js/admins/users/app.js",
+    "/js/app.js": "/js/app.js",
+    "/js/students/login/app.js": "/js/students/login/app.js",
+    "/js/students/register/app.js": "/js/students/register/app.js",
+    "/css/app_main.css": "/css/app_main.css",
+    "/css/admin/login.css": "/css/admin/login.css"
 }

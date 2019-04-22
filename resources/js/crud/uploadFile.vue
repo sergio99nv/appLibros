@@ -1,51 +1,64 @@
-<style>
+<style scoped>
 
-        .file-wrapper{
-            margin-top: 1rem;
-            
-        }
-
+        .file-component{
         
-
-        
-        .file-action{
            padding: 1rem 1rem;
            background-color: ghostwhite;
            border: 1.5px dashed #888282;
-           
+            
         }
 
-        .file-action button{
-            margin-right: 1.1rem;
+    
+        .file-uploaded {
+            align-items: center;
         }
 
-        .file-action__col--msg strong{
+        .file-uploaded__link,
+        .file-uploaded__title{
             display: block;
         }
-
-        .file-action__col--remove{
-            margin-left: 1rem;
-        }
-
-        .file-action__col--remove i{
-            cursor: pointer;
-        }
- 
         
-        
-
+    
 
 </style>
 <template>
-    <div class="file-wrapper">
+    <div class="file-component">
 
-       <input  hidden ref="inputFile"  type="file" @change="inputChange($event)" >
+       <input  hidden ref="inputFile" :accept="getFileExtensions()" type="file" @change="inputChange($event)" >
        
-        <div class="file-action layout row">
-            
-            <div   v-if="!fileUploadedChecked">
+        <div class="file-wrapper">
+
+            <!-- si se esta subiendo el archivo -->
+             <section class="v-card__text  text-xs-center" v-if="sendingData">
+                  <div class="row">
+                       <v-progress-circular
+                     :size="25"
+                     color="primary"
+                     indeterminate
+                  ></v-progress-circular>
+                    <div>
+                        subiendo archivo ...
+                    </div>
+                  </div>
+                 <div class="xs-">
+                      <button @click="cancelHttpRequestFn()" 
+                        class="v-btn v-btn--outline v-btn--depressed theme--light red--text">
+                            <span class="red--text v-btn__content">
+                                cancelar
+                            </span>         
+                      </button>
+
+                  </div>
+
+              </section>        
+
+
+          
+             <!--seccion del boton subir -->
+            <section class="sc-btn-upload layout row"   v-show="!sendingData">
+               <!-- boton subir -->
                 <button
-                   
+                :disabled="sendingData"                    
                      @click="$refs.inputFile.click()"
                    class="v-btn blue-grey darken-2">
                    <span class="white--text v-btn__content">
@@ -56,51 +69,37 @@
                         </i>
                    </span>          
                  </button>
-                <div class="red--text text-xs-center" v-show="serverErrorMsg.length  || error.value || errorProp">
-                        {{
-                                serverErrorMsg  || error.msg   || "suba el archivo"
-                        }} 
-                </div>
 
-                  
-              
-            </div>
+                <!-- si el archivo se  subio -->
+                 <section  v-if="fileUploadedChecked"  class="file-uploaded  layout row">
+                    <div  v-if="type=='image'" >
+                        <img
+                            v-show="imgMiniatureSrc.length"
+                            class="file-action__imageMiniature" 
+                                        :src="imgMiniatureSrc">
+                           
+                                <strong class="file-uploaded__title  green--text">Imagen subida</strong> 
+                                 <a class="file-uploaded__link" :href="urlPath + '/' + inputFile" download>descargar</a>   
+                            
+                    </div>
+                    <div v-else>
+                        <strong class="green--text">Archivo subido</strong> 
+                         <a class="file-uploaded__link" :href="urlPath + '/' + inputFile" download>descargar</a>   
+                    </div>  
+                    
+                 </section>
+                 
+
+            </section>
+
+               <!-- en caso de un error -->
+            <section class="red--text " v-show="serverErrorMsg.length  || error.value || errorProp">
+                    {{
+                            serverErrorMsg  || error.msg   || "suba el archivo"
+                    }} 
+            </section>
  
-           
-           <div  v-if="fileUploadedChecked"  class="file-action__uploaded  layout row">
-
-                <button
-                        @click="$refs.inputFile.click()"
-                        class="v-btn green darken-1">
-                            <span class="white--text v-btn__content">
-                                    {{label}}   subido
-                                     <i 
-                                        class="v-icon v-icon--right material-icons theme--light">cloud_upload
-                                    </i>
-                            </span>     
-                </button>   
-
-
-                 <div  v-if="type=='image'" >
-                     <img
-                  v-show="imgMiniatureSrc.length"
-                 class="file-action__imageMiniature" 
-                            :src="imgMiniatureSrc">
-                 
-                 </div>
-                
-                 
-
-                       
-           </div>
-
-            
-            
         </div>
-
-        
-    
-         
         
     </div>
 </template>
@@ -118,10 +117,18 @@ export default {
               type : Number,
               required : true
           },
+          urlUpload:{
+              type : String,
+              required : true,
+          },
+           urlPath:{
+              type : String,
+              required : false,
+          },
           type: {
-                type : String,
-                required : true,
-                defaults : "Archivo"
+            type : String,
+            required : true,
+            defaults : "Archivo"
           },
           showImgMiniature:{
               type  : Boolean,
@@ -145,12 +152,7 @@ export default {
              required : true,
              default : ""
          },
-         isUpdate : {
-             type : Boolean,
-             required : false,
-             defaults : false
-         }
-
+   
 
       },
       name : "upload-file",
@@ -161,91 +163,193 @@ export default {
                   value : false,
                   msg : ""
               },
-              fileOk :  false,
-              imgMiniatureSrc : ""
+             
+              imgMiniatureSrc : "",
+              cancelHttpRequest : null,
+              sendingData : false
           }
       }, 
       created(){
-           if(this.isUpdate && this.value){
+           if(this.type =="image" && this.value && this.value.trim().length){
                this.inputFile = this.value;
-               this.fileOk =  true;
-               this.imgMiniatureSrc =   this.value;
-
+               this.imgMiniatureSrc =  this.urlPath + "/" + this.inputFile;
            }
+
       },
       methods:{
+
+          /**
+           * metodo que se asigna al input file,
+           * validamos la extension y el peso si todo esta bien
+           * se sube el archivo
+           * @param {} event
+           */
           inputChange(event){
-             const input =event.target;
+              const input =event.target;
               if(!input.files.length) return;
                 
-
                 this.$emit("inputChange", true);    
                 this.setError(false, "");
-                this.fileOk = false
                 this.inputFile = ""
                 this.imgMiniatureSrc = ""
 
-                 const inputFile = input.files[0];
-                 this.inputFile = inputFile;
+                const inputFile = input.files[0];
 
                 //validamos la extension
                 if(!FileHelper.validateExt(inputFile, this.extensions)){
-                   // input.value = "";
-                    this.setError(true, "extension no permitida")
+                    this.setError(true, "solo estan permitidas las siguientes extensiones: " + this.extensions.toString())
                     return;
                 }
+
                 //validamos el peso del archivo
                 if(!FileHelper.validateSize(inputFile, this.maxSize)){
-                   // input.value = "";
-                    this.setError(true, "peso no valido")
+                    this.setError(true, "peso maximo permitido: " + (this.maxSize / 1024) + "MB")
                     return;
                 }
                
-              
-               this.fileOk = true;
+                this.$refs["inputFile"].value = "";
+                //subimos el archivo
+                const formData = new FormData();
+                formData.append("file", inputFile);
+                this.uploadFile(this.urlUpload, formData);
 
-              if(this.type==="image"){
-                  this.imgReader(inputFile);
-              }
+
+                if(this.type==="image"){
+                    this.imgReader(inputFile);
+                }
               
           },
  
 
-            imgReader(inputFile){
-                    const reader = new FileReader();
-                    reader.readAsDataURL(inputFile);
-                    reader.onload =  (e)=>{
-                        this.imgMiniatureSrc = e.target.result;
-                    }
-              },
+
+        /**
+         * metodo para mostar la imagen que se subio
+         * @param {Object} inputFile el archivo q subio
+         */
+        imgReader(inputFile){
+                const reader = new FileReader();
+                reader.readAsDataURL(inputFile);
+                reader.onload =  (e)=>{
+                    this.imgMiniatureSrc = e.target.result;
+                }
+         },
           
 
+
+          /**
+          * metodo para mostar o ocultar en input file
+          * @param {boolean}  error si es true muesta el mensaje
+          * @param {string} msg  El mensaje que se mostrara
+          */
           setError(error, msg){
               this.error.value = error;
               this.error.msg = msg;
           },
 
+
+
           /**
-           * metodo para limpiar  el inpit file
+           * metodo para limpiar  el input file
            */
           cleanInputFile(){
                 this.$refs["inputFile"].value = ""
                 this.inputFile = "",
                 this.imgMiniatureSrc = "";
-                this.fileOk = false;
-                 this.setError(false, "")
-          }
+                this.setError(false, "")
+          },
+
+
+         /**
+          * crea un token para el envio con ajax
+          */
+         createHttpToken(){
+                const CancelToken = axios.CancelToken;
+                this.cancelHttpRequest = CancelToken.source();
+         },
+
+
+        /**
+         * cancela peticion http
+         */
+        cancelHttpRequestFn(){
+            if(this.cancelHttpRequest === null) return;
+            this.cancelHttpRequest.cancel();
+        },
+
+        
+
+        /**
+         * subir un archivo al server
+         * 
+         * @param {string} url   
+         * @param {Object} param los parametros q se enviaran
+         */
+        uploadFile(url, params){
+            this.createHttpToken();
+            this.sendingData = true;
+            this.$emit("fileSendingEvent", true);
+            
+            axios.post(url, params, {
+                cancelToken: this.cancelHttpRequest.token
+                })
+            .then( (response) => {
+                this.sendingData = false;
+                
+                const responseData = response.data;
+                if(responseData.error === false){
+                    this.inputFile  = responseData.file;
+                   
+                }
+                else{
+                    if(responseData.dataError){
+                        this.setError(true,  responseData.dataError.file[0]);    
+                        this.$emit("fileSendingEvent", false, true);   
+                        this.setError(true, "error al subir el archivo");         
+                    }else{
+                        throw new Error('un error al intetar guardar los datos');
+                    } 
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                this.sendingData = false;
+                this.inputFile  = "";
+
+                if (axios.isCancel(error)) {
+                    this.$emit("fileSendingEvent", false);
+                    
+                }else{
+                    this.$emit("fileSendingEvent", false, true);
+                    this.setError(true, "error al subir el archivo");
+                }
+            });
+         },
+
+
+         getFileExtensions(){
+            return this.extensions.map( element => "." + element);
+         }
 
       },
        watch: {
-            inputFile(val) {
-                this.$emit('input', val);
-            },
+        inputFile(val) {
+            this.$emit('input', val);
+
+            if(val.trim().length > 0){
+                  
+               this.$emit("fileSendingEvent", false);
+                  
+            }
+        },
      },
       computed:{
             fileUploadedChecked(){
-                return this.fileOk && this.inputFile;
+                return  this.inputFile && this.inputFile.trim().length > 0;
             }
+      },
+      
+      beforeDestroy(){
+            this.cancelHttpRequestFn();
       }
         
      

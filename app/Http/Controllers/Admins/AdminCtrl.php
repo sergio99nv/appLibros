@@ -10,21 +10,19 @@ class  AdminCtrl extends Controller
 {
     public function index()
     {
-       // var_dump($data);
-        return view('admins/users/index');
+        return view('admins/users');
     }
 
 
     public function getAll()
     {
-        $data  =  AdminMdl::all('adminId as id', 'descripcion' ,'fullName', 'userName', 'state');
-        return response()->json($data);
+        $data  =  AdminMdl::all('adminId as id', 'userName', 'state');
+        return response()->json([
+            "data" => $data,
+            'error' =>  false
+        ]);
     }
 
 
-    public function store(Request $request)
-    {
-        # code...
-        echo   $request->name;
-    }
+   
 }

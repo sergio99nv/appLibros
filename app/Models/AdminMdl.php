@@ -8,13 +8,9 @@ class AdminMdl extends Model
 {
    
     protected $table = 'admins';
+    protected $primaryKey = "adminId";
     public $timestamps = false;
 
    // protected $guarded = ['password'];
-
-
-
-
-   
 
 }

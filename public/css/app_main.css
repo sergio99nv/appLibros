@@ -1,0 +1,38 @@
+body{
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.main-nav{
+    height: 64px;
+    line-height: 64px;
+}
+
+.main-nav__content{
+    padding: 0 28px;
+    display: grid;
+    align-items: center;
+    height: 100%;
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+
+}
+
+.main-nav__logo{
+    width: 45px;
+    
+}
+
+
+.main-nav__btnMenu{
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+
+
+.asideMainMenu{
+    transform: translateX(-100%); 
+    width: 300px;
+}
+
+ 

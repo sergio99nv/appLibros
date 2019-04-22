@@ -1,42 +1,55 @@
-<style>
-    @media screen and (min-width:920px){
-        .store-dialog{
-          max-width: 920px;
-        }
+<style scoped>
 
-        .store-dialog__form{
+    .file-action__imageMiniature{
+        max-width: 120px;
+        height: 150px;
+        max-height: 150px;
+    }
+
+    .main-wrapper--book{
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 1rem 0 3rem 0;
+    }
+
+
+</style>
+
+<style>
+     
+     @media screen and (min-width:920px){
+
+        .main-wrapper--book  .v-dialog{
+                max-width: 920px;
+         }
+
+
+         .main-wrapper--book .file-action__imageMiniature{
+            max-width: 120px;
+            height: 150px;
+            max-height: 150px;
+         } 
+
+         .main-wrapper--book  .store-form{
             display: grid;
             grid-gap: 10px;
             grid-template-columns: repeat(2, 1fr);
         }
 
-         .store-dialog__form  .store-dialog__form__item:nth-child(3) {
-             grid-column: 1 / 3;
-         }
-
-         .file-action__imageMiniature{
-            max-width: 120px;
-            height: 150px;
-            max-height: 150px;
-         }
-
-         .main-wrapper{
-             max-width: 920px;
-             margin: 0 auto;
-             padding: 1rem 0 3rem 0;
-         }
-         .theme--light.application{
-           background-color: transparent;
+        .main-wrapper--book  .store-form .store-form__item:nth-child(5) {
+            grid-column: 1 / 3;
         }
-         body{
-             background-color: #efefefd9;
-         }
+
+
     }
+
+    
+
 </style>
 
-
 <template>
-    <div class="main-wrapper">
+    <div class="main-wrapper  main-wrapper--book">
+        
        <v-app>    
         <crud
              :init-data = "config.initData"
@@ -80,9 +93,37 @@ import crud from '@pathRoot/crud/crud.vue'
          },
          created() {
              const prefixUrl =  "/admins/bookCategories/books";
-           
+             const configFile = window.AppBookHelper.fileConfig;
+              
+             const configFileImg = configFile.image;
+             const configFileFile = configFile.file;
+
 
              const fieldsStore = [
+                   {field: "file",
+                        label:"libro", 
+                        type:"file" ,
+                        fileConfig:{
+                            maxSize : configFileFile["maxSize"],
+                            extensions : configFileFile["extensions"],
+                            urlPath : configFileFile["urlPath"],
+                            urlUpload : prefixUrl + "/storeFile"
+                            
+                        },
+                        rules: {required: value => !!value || 'seleccione el archivo'}
+                    },
+                    {field: "cover",
+                        label:"miniatura", 
+                        type:"image" ,
+                        fileConfig:{
+                            maxSize : configFileImg["maxSize"],
+                            extensions : configFileImg["extensions"],
+                            urlPath : configFileImg["urlPath"],
+                            urlUpload : prefixUrl + "/storeCover",
+                             
+                        },
+                        rules: {required: false}
+                    },
                     {field: "name",
                         label:"Nombre", 
                         type:"text" ,
@@ -99,24 +140,7 @@ import crud from '@pathRoot/crud/crud.vue'
                         type:"textArea" ,
                         rules: {required: value => !!value || 'ingrese la descripción'  }
                     },
-                        {field: "file",
-                        label:"archivo", 
-                        type:"file" ,
-                        fileConfig:{
-                            maxSize : 5000,
-                            extensions : ["pdf"]
-                        },
-                        rules: {required: value => !!value || 'seleccione el archivo'}
-                    },
-                    {field: "cover",
-                        label:"miniatura", 
-                        type:"image" ,
-                        fileConfig:{
-                            maxSize : 5000,
-                            extensions : ["png", "jpg", "jpeg"]
-                        },
-                        rules: {required: false}
-                    }
+                      
                 ];
 
 

@@ -28,5 +28,32 @@ mix.js('resources/js/admins/bookCategories/app.js',
         'public/js/admins/bookCategories/');
    //.sass('resources/sass/app.scss', 'public/css');
 
-//mix.js('resources/js/crud/app.js', 'public/js/crud')
+ //login admins
+ mix.js('resources/js/admins/users/app.js', 
+ 'public/js/admins/users/app.js');
+
+
+
+   //login admins
+   mix.js('resources/js/admins/login/app.js', 
+   'public/js/admins/login/app.js');
+
+   //login students
+   mix.js('resources/js/students/login/app.js', 
+   'public/js/students/login/app.js');
+
+   //register students
+   mix.js('resources/js/students/register/app.js', 
+   'public/js/students/register/app.js');
+
+  //menu
+  mix.js('resources/js/app.js', 
+  'public/js/app.js');
+
+
+
+ mix.styles('resources/css/app_main.css', 'public/css/app_main.css')
+
+
+ mix.styles('resources/css/admin/login.css', 'public/css/admin/login.css')
    //.sass('resources/sass/app.scss', 'public/css');

@@ -4,6 +4,8 @@ namespace appLibros\Http\Controllers\Admins;
 
 use Illuminate\Http\Request;
 use appLibros\Http\Controllers\Controller;
+use appLibros\Http\Controllers\HelperCtrl;
+
 use appLibros\Models\BookCategoryMdl;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +16,8 @@ class BookCategoryCtrl extends Controller
     public function index()
     {
        // var_dump($data);
-        return view('admins/bookCategories/index');
+       $fileConfig =  HelperCtrl::getFileConfig();
+        return view('admins/bookCategories/index', ["fileConfig"=>$fileConfig]);
     }
 
 
@@ -67,7 +70,8 @@ class BookCategoryCtrl extends Controller
         } catch (\Exception  $e) {
             return response()->json([
                'msg' => "erro al intentar guardar los datos",
-               'error' =>  true
+               'error' =>  true,
+               "x" => $e->getMessage()
            ]);
         }    
     }

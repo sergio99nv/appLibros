@@ -37,7 +37,10 @@
         </main>
 
         
-        <script src="/js/app.js"></script>
+       
+        @if(Session::has("userType") && Session::get("userType") === "admin" ) 
+              <script src="/js/app.js"></script>
+       @endif
        @yield('scripts')
     </body>
 </html>

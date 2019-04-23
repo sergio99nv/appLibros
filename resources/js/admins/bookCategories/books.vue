@@ -30,12 +30,15 @@
             max-height: 150px;
          } 
 
+
+         .main-wrapper--book  .update-form,
          .main-wrapper--book  .store-form{
             display: grid;
             grid-gap: 10px;
             grid-template-columns: repeat(2, 1fr);
         }
 
+        .main-wrapper--book  .update-form .update-form__item:nth-child(5) 
         .main-wrapper--book  .store-form .store-form__item:nth-child(5) {
             grid-column: 1 / 3;
         }

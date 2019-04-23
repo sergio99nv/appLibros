@@ -1836,6 +1836,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "books",
@@ -2263,6 +2266,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2358,12 +2392,16 @@ __webpack_require__.r(__webpack_exports__);
      * @param {Object} data la data recibida 
      */
     addNewDataEventHandler: function addNewDataEventHandler(data) {
+      var _this2 = this;
+
       this.loadStoreComponent = false;
       this.dataCrud.push(data);
       this.actionMsg.msg = "datos guardados";
       this.actionMsg.show = true;
-      var refHtml = this.$refs["refItemData" + data.id];
-      console.log(refHtml); //AppHelper.markHtmlElement(refHtml,  ["light-green" , "lighten-4"], 4500);
+      this.$nextTick(function () {
+        var refHtml = _this2.$refs["refItemData" + data.id][0];
+        _pathRoot_appHelper__WEBPACK_IMPORTED_MODULE_2__["default"].markHtmlElement(refHtml, ["light-green", "lighten-4"], 5000);
+      });
     },
 
     /**
@@ -2376,12 +2414,19 @@ __webpack_require__.r(__webpack_exports__);
     updateDataEventHandler: function updateDataEventHandler(data, index) {
       if (this.dataCrud[index]) {
         var item = this.dataCrud[index];
+        var itemId = item.id;
+        this.loadUpdateComponent[itemId] = false;
 
         var _arr = Object.keys(item);
 
         for (var _i = 0; _i < _arr.length; _i++) {
           var key = _arr[_i];
-          if (key === "id") continue;
+
+          if (key === "id") {
+            continue;
+          }
+
+          ;
 
           if (data[key]) {
             item[key] = data[key];
@@ -2390,15 +2435,15 @@ __webpack_require__.r(__webpack_exports__);
 
         this.actionMsg.msg = "datos actualizados";
         this.actionMsg.show = true;
-        var refHtml = this.$refs["refItemData" + item.id][0];
-        _pathRoot_appHelper__WEBPACK_IMPORTED_MODULE_2__["default"].markHtmlElement(refHtml, ["light-green", "lighten-4"], 4500);
+        var refHtml = this.$refs["refItemData" + itemId][0];
+        _pathRoot_appHelper__WEBPACK_IMPORTED_MODULE_2__["default"].markHtmlElement(refHtml, ["light-green", "lighten-4"], 5000);
       }
     },
     setSearchFilters: function setSearchFilters() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.printViewData.forEach(function (element) {
-        _this2.$set(_this2.searchFilters, element, "");
+        _this3.$set(_this3.searchFilters, element, "");
       });
     },
     searchData: function searchData(event, item) {
@@ -2430,14 +2475,15 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     actionMsg: {
       handler: function handler(newVal, oldVal) {
-        var _this3 = this;
+        var _this4 = this;
+
+        if (this.actionMsg.timer) clearInterval(this.actionMsg.timer);
 
         if (newVal.show) {
-          if (this.actionMsg.timer) clearInterval(this.actionMsg.timer);
           this.actionMsg.timer = setTimeout(function () {
-            _this3.actionMsg.show = false;
-            _this3.actionMsg.msg = "";
-          }, 5000);
+            _this4.actionMsg.show = false;
+            _this4.actionMsg.msg = "";
+          }, 5500);
         }
       },
       deep: true
@@ -2471,9 +2517,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _uploadFile__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./uploadFile */ "./resources/js/crud/uploadFile.vue");
-//
-//
-//
 //
 //
 //
@@ -3034,9 +3077,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "update",
@@ -3157,7 +3197,8 @@ __webpack_require__.r(__webpack_exports__);
       } //obtenmos la data
 
 
-      var formData = this.getDataForm(objectForm); //enviamos la data al server
+      var formData = this.getDataForm(objectForm);
+      formData.append("id", this.updatedId); //enviamos la data al server
 
       this.sendDataForm(this.url, formData);
     },
@@ -8165,7 +8206,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n@media screen and (min-width:920px){\n.main-wrapper--book  .v-dialog{\n            max-width: 920px;\n}\n.main-wrapper--book .file-action__imageMiniature{\n        max-width: 120px;\n        height: 150px;\n        max-height: 150px;\n}\n.main-wrapper--book  .store-form{\n        display: grid;\n        grid-gap: 10px;\n        grid-template-columns: repeat(2, 1fr);\n}\n.main-wrapper--book  .store-form .store-form__item:nth-child(5) {\n        grid-column: 1 / 3;\n}\n}\n\n\n\n", ""]);
+exports.push([module.i, "\n@media screen and (min-width:920px){\n.main-wrapper--book  .v-dialog{\n            max-width: 920px;\n}\n.main-wrapper--book .file-action__imageMiniature{\n        max-width: 120px;\n        height: 150px;\n        max-height: 150px;\n}\n.main-wrapper--book  .update-form,\n     .main-wrapper--book  .store-form{\n        display: grid;\n        grid-gap: 10px;\n        grid-template-columns: repeat(2, 1fr);\n}\n.main-wrapper--book  .update-form .update-form__item:nth-child(5) \n    .main-wrapper--book  .store-form .store-form__item:nth-child(5) {\n        grid-column: 1 / 3;\n}\n}\n\n\n\n", ""]);
 
 // exports
 
@@ -8222,7 +8263,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.msg-saved-ok{\n    position: fixed;\n    bottom:   0;\n    width: 100%;\n    left: 0;\n    z-index: 100;\n}\n.close-modal-btn{\n    width: auto;\n    padding: 0 0;\n    height: auto;\n}\n", ""]);
+exports.push([module.i, "\n.msg-saved-ok{\n    position: fixed;\n    bottom:   0;\n    width: 100%;\n    left: 0;\n    z-index: 100;\n    padding: 11px 24px;\n}\n.msg-saved-ok .layout{\n    justify-content: space-between;\n}\n.msg-saved-ok__close{\n    cursor: pointer;\n}\n.close-modal-btn{\n    width: auto;\n    padding: 0 0;\n    height: auto;\n}\n", ""]);
 
 // exports
 
@@ -39863,36 +39904,46 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm.actionMsg.show === true
-      ? _c(
-          "div",
-          { staticClass: "msg-saved-ok " },
-          [
-            _c(
-              "v-card",
-              { staticClass: "green " },
-              [
-                _c(
-                  "v-card-title",
-                  {
-                    staticClass: "white--text",
-                    attrs: { "primary-title": "" }
-                  },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.actionMsg.msg || "d") +
-                        "\n        "
-                    )
-                  ]
-                )
-              ],
-              1
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.actionMsg.show == true,
+            expression: "actionMsg.show == true"
+          }
+        ],
+        staticClass: "  msg-saved-ok green white--text"
+      },
+      [
+        _c("div", { staticClass: "layout" }, [
+          _c("h2", [
+            _vm._v(
+              "\n                " +
+                _vm._s(_vm.actionMsg.msg) +
+                "    \n            "
             )
-          ],
-          1
-        )
-      : _vm._e(),
+          ]),
+          _vm._v(" "),
+          _c(
+            "i",
+            {
+              staticClass:
+                "v-icon    msg-saved-ok__close material-icons  white--text",
+              attrs: { title: "cerrar", "aria-hidden": "true" },
+              on: {
+                click: function() {
+                  return (_vm.actionMsg.show = false)
+                }
+              }
+            },
+            [_vm._v("close")]
+          )
+        ])
+      ]
+    ),
     _vm._v(" "),
     _vm.createData
       ? _c(
@@ -39951,7 +40002,7 @@ var render = function() {
                           [
                             _c("template", { slot: "title-main" }, [
                               _vm._v(
-                                "\n                    " +
+                                "\n                    \n                    " +
                                   _vm._s(
                                     _vm.createData.titles.main || "agregar"
                                   ) +
@@ -39961,15 +40012,21 @@ var render = function() {
                             _vm._v(" "),
                             _c("template", { slot: "close-modal" }, [
                               _c(
-                                "div",
+                                "button",
                                 {
+                                  staticClass:
+                                    "v-btn v-btn--flat     black--text ",
                                   on: {
                                     click: function() {
-                                      return (_vm.loadStoreComponent = false)
+                                      return (_vm.loadStoreComponent = !_vm.loadStoreComponent)
                                     }
                                   }
                                 },
-                                [_vm._v("cerrar")]
+                                [
+                                  _vm._v(
+                                    "\n                             cerrar\n                        "
+                                  )
+                                ]
                               )
                             ])
                           ],
@@ -40107,7 +40164,7 @@ var render = function() {
                                   {
                                     attrs: {
                                       "content-class": "store-dialog",
-                                      persistent: false
+                                      persistent: true
                                     },
                                     model: {
                                       value:
@@ -40160,10 +40217,10 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                                s\n                                " +
+                                                      "\n                    \n                                " +
                                                         _vm._s(
                                                           _vm.updateData.titles
-                                                            .btn || "agregar"
+                                                            .btn || "Actualizar"
                                                         ) +
                                                         "\n                            "
                                                     )
@@ -40181,9 +40238,35 @@ var render = function() {
                                                   "\n                            " +
                                                     _vm._s(
                                                       _vm.updateData.titles
-                                                        .main || "agregar"
+                                                        .main || "Actualizar"
                                                     ) +
                                                     "  \n                        "
+                                                )
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "template",
+                                              { slot: "close-modal" },
+                                              [
+                                                _c(
+                                                  "button",
+                                                  {
+                                                    staticClass:
+                                                      "v-btn v-btn--flat     black--text ",
+                                                    on: {
+                                                      click: function() {
+                                                        return (_vm.loadUpdateComponent[
+                                                          itemData.id
+                                                        ] = false)
+                                                      }
+                                                    }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                cerrar\n                            "
+                                                    )
+                                                  ]
                                                 )
                                               ]
                                             )
@@ -40442,54 +40525,64 @@ var render = function() {
           _c(
             "button",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.sendingFiles > 0,
+                  expression: "sendingFiles > 0"
+                }
+              ],
               staticClass: "v-btn v-btn--depressed v-btn--small theme--light",
-              attrs: { disabled: _vm.sendingFiles <= 0, type: "button" }
+              attrs: { disabled: _vm.sendingFiles <= 0, type: "button" },
+              on: {
+                click: function() {
+                  return (_vm.sendingFormData = false)
+                }
+              }
             },
             [_vm._m(0)]
           )
         ]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "v-card__actions" }, [
-        _c("div", { staticClass: "spacer" }),
-        _vm._v(" "),
-        !_vm.sendingFormData
-          ? _c(
-              "button",
-              {
-                staticClass:
-                  "v-btn v-btn--flat theme--light primary--text  close-modal-btn",
-                attrs: { type: "button" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "v-btn__content" },
-                  [_vm._t("close-modal")],
-                  2
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "v-btn theme--dark primary",
-            attrs: { disabled: _vm.sendingFormData, type: "button" },
-            on: {
-              click: function($event) {
-                return _vm.dataFormHandler()
-              }
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.sendingFormData,
+              expression: "!sendingFormData"
             }
-          },
-          [
-            _c("div", { staticClass: "v-btn__content" }, [
-              _vm._v("\n                     guardar\n               ")
-            ])
-          ]
-        )
-      ])
+          ],
+          staticClass: "v-card__actions"
+        },
+        [
+          _c("div", { staticClass: "spacer" }),
+          _vm._v(" "),
+          _c("span", [_vm._t("close-modal")], 2),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "v-btn theme--dark primary",
+              attrs: { disabled: _vm.sendingFormData, type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.dataFormHandler()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "v-btn__content" }, [
+                _vm._v("\n                     guardar\n               ")
+              ])
+            ]
+          )
+        ]
+      )
     ])
   ])
 }
@@ -40555,12 +40648,12 @@ var render = function() {
               expression: "!sendingFormData"
             }
           ],
-          staticClass: "v-card__text store-dialog__form"
+          staticClass: "v-card__text update-form"
         },
         _vm._l(_vm.fieldsUpdate, function(item, index) {
           return _c(
             "div",
-            { key: index, staticClass: "store-dialog__form__item" },
+            { key: index, staticClass: " update-form__item" },
             [
               item.type == "text"
                 ? _c(
@@ -40712,54 +40805,64 @@ var render = function() {
           _c(
             "button",
             {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.sendingFiles > 0,
+                  expression: "sendingFiles > 0"
+                }
+              ],
               staticClass: "v-btn v-btn--depressed v-btn--small theme--light",
-              attrs: { disabled: _vm.sendingFiles <= 0, type: "button" }
+              attrs: { disabled: _vm.sendingFiles <= 0, type: "button" },
+              on: {
+                click: function() {
+                  return (_vm.sendingFormData = false)
+                }
+              }
             },
             [_vm._m(0)]
           )
         ]
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "v-card__actions" }, [
-        _c("div", { staticClass: "spacer" }),
-        _vm._v(" "),
-        !_vm.sendingFormData
-          ? _c(
-              "button",
-              {
-                staticClass:
-                  "v-btn v-btn--flat theme--light primary--text  close-modal-btn",
-                attrs: { type: "button" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "v-btn__content" },
-                  [_vm._t("close-modal")],
-                  2
-                )
-              ]
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "v-btn theme--dark primary",
-            attrs: { disabled: _vm.sendingFormData, type: "button" },
-            on: {
-              click: function($event) {
-                return _vm.dataFormHandler()
-              }
+      _c(
+        "div",
+        {
+          directives: [
+            {
+              name: "show",
+              rawName: "v-show",
+              value: !_vm.sendingFormData,
+              expression: "!sendingFormData"
             }
-          },
-          [
-            _c("div", { staticClass: "v-btn__content" }, [
-              _vm._v("\n                     guardar\n               ")
-            ])
-          ]
-        )
-      ])
+          ],
+          staticClass: "v-card__actions"
+        },
+        [
+          _c("div", { staticClass: "spacer" }),
+          _vm._v(" "),
+          _c("span", [_vm._t("close-modal")], 2),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "v-btn theme--dark primary",
+              attrs: { disabled: _vm.sendingFormData, type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.dataFormHandler()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "v-btn__content" }, [
+                _vm._v("\n                     guardar\n               ")
+              ])
+            ]
+          )
+        ]
+      )
     ])
   ])
 }

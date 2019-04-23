@@ -4,7 +4,7 @@
 @section('title', 'Login admin')
 
 @section('content')
-    <a href="/admins/bookCategories">gestionar libros</a> 
+    <h1>Bienvenido</h1>
 @endsection
 
 

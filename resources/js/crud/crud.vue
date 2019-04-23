@@ -5,7 +5,19 @@
         width: 100%;
         left: 0;
         z-index: 100;
+        padding: 11px 24px;
+       
     }
+
+     .msg-saved-ok .layout{
+        justify-content: space-between;
+     }
+
+    .msg-saved-ok__close{
+        cursor: pointer;
+    }
+
+
 
     .close-modal-btn{
         width: auto;
@@ -16,14 +28,20 @@
 
 <template>
     <div>
-        <div v-if="actionMsg.show === true" class="msg-saved-ok ">
-            <v-card class="green "> 
-            <v-card-title primary-title class="white--text">
+        <div v-show="actionMsg.show == true" class="  msg-saved-ok green white--text">
+            <div class="layout">
+                    <h2>
                     {{
-                        actionMsg.msg || "d"
-                    }}
-            </v-card-title>
-            </v-card>       
+                        actionMsg.msg  
+                    }}    
+                </h2>   
+    
+                <i
+                    title="cerrar"
+                    @click="()=>actionMsg.show  = false"
+                    aria-hidden="true" class="v-icon    msg-saved-ok__close material-icons  white--text">close</i>
+            </div>
+             
         </div>
         
         <div v-if="createData">
@@ -33,6 +51,7 @@
                 </div>
             </button>
              <v-dialog
+                 
                  v-if="loadStoreComponent"
                 content-class="store-dialog"
                 v-model="loadStoreComponent"
@@ -45,11 +64,15 @@
                     :fields-store="createData.fieldsStore"
                     :fields-hidden="createData.fieldsHidden">
                     <template slot="title-main">
+                        
                         {{createData.titles.main || 'agregar'}} 
                     </template> 
-
+                    
                      <template slot="close-modal">
-                             <div   class="" @click="()=>  loadStoreComponent= false" >cerrar</div>
+                             <button    class="v-btn v-btn--flat     black--text " 
+                                 @click="()=>  loadStoreComponent= !loadStoreComponent" >
+                                 cerrar
+                            </button>  
                      </template>
                 
                 </store> 
@@ -116,7 +139,7 @@
                              v-if="loadUpdateComponent[itemData.id]"
                             content-class="store-dialog"
                             v-model="loadUpdateComponent[itemData.id]"
-                            :persistent = "false"
+                            :persistent = "true"
                             >
                            
                           <update
@@ -134,14 +157,22 @@
                                 <v-btn
                                     color="primary"
                                     dark>
-                                    s
-                                    {{updateData.titles.btn || 'agregar'}}
+                        
+                                    {{updateData.titles.btn || 'Actualizar'}}
                                 </v-btn>
                             </template>
 
                             <template slot="title-main">
-                                {{updateData.titles.main || 'agregar'}}  
+                                {{updateData.titles.main || 'Actualizar'}}  
                             </template>
+
+                           <template slot="close-modal">
+                                <button    class="v-btn v-btn--flat     black--text " 
+                                    @click="()=>  loadUpdateComponent[itemData.id] = false" >
+                                    cerrar
+                                </button>  
+                           </template>
+                            
                        </update> 
 
 
@@ -274,9 +305,10 @@
                  this.actionMsg.msg = "datos guardados";
                  this.actionMsg.show = true;
 
-                 const refHtml =  this.$refs["refItemData"+ data.id]
-                console.log(refHtml)
-                //AppHelper.markHtmlElement(refHtml,  ["light-green" , "lighten-4"], 4500);
+                this.$nextTick(()=>{
+                     const refHtml =  this.$refs["refItemData"+ data.id][0]
+                    AppHelper.markHtmlElement(refHtml,  ["light-green" , "lighten-4"], 5000);
+                })
             },
 
 
@@ -290,11 +322,17 @@
              */
              updateDataEventHandler(data, index){
                 
+
                  if(this.dataCrud[index]){
                      const item = this.dataCrud[index];
+                     const itemId= item.id;
+                     this.loadUpdateComponent[itemId] =false;
 
                     for (const key of Object.keys(item)) {
-                         if(key === "id") continue;
+                         if(key === "id") {
+
+                             continue
+                         };
                          if(data[key]){
                               item[key]  = data[key];   
                          }                           
@@ -302,8 +340,9 @@
 
                     this.actionMsg.msg = "datos actualizados";
                     this.actionMsg.show = true;
-                    const refHtml =  this.$refs["refItemData"+ item.id][0]
-                    AppHelper.markHtmlElement(refHtml,  ["light-green" , "lighten-4"], 4500);
+                    const refHtml =  this.$refs["refItemData"+ itemId][0]
+                   
+                    AppHelper.markHtmlElement(refHtml,  ["light-green" , "lighten-4"], 5000);
                  }
 
             },
@@ -351,15 +390,14 @@
         watch: {
             actionMsg:{
                 handler: function(newVal, oldVal) {
-                   if(newVal.show){
-                      if(this.actionMsg.timer) clearInterval(this.actionMsg.timer);
-
+                 if(this.actionMsg.timer) clearInterval(this.actionMsg.timer);
+                   
+                if(newVal.show){
                       this.actionMsg.timer =  setTimeout(()=>{
                             this.actionMsg.show = false;    
                             this.actionMsg.msg = "";
-                       }, 5000)
-                   }
-
+                       }, 5500)
+                   } 
                 },
                deep: true
             }

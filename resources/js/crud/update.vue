@@ -25,9 +25,9 @@
             </div>
          
            <!--  campos del formulario -->
-          <section class="v-card__text store-dialog__form" v-show="!sendingFormData">
+          <section class="v-card__text update-form" v-show="!sendingFormData">
               
-              <div class="store-dialog__form__item"  v-for="(item, index) in fieldsUpdate"    :key="index">
+              <div class=" update-form__item"  v-for="(item, index) in fieldsUpdate"    :key="index">
                  <!-- si es input text -->
                   <componet
                         v-if="item.type=='text'"
@@ -93,7 +93,7 @@
                   guardando ...
                </div>
 
-               <button :disabled="sendingFiles<=0"
+              <button @click="()=> sendingFormData = false" v-show="sendingFiles > 0" :disabled="sendingFiles<=0"
                    type="button" 
                    class="v-btn v-btn--depressed v-btn--small theme--light">
                   <div class="v-btn__content  blue--text">
@@ -107,17 +107,14 @@
           
 
           <!-- accciones(btns) -->
-         <div class="v-card__actions">
+         <div class="v-card__actions"  v-show="!sendingFormData">
                
                <div class="spacer"></div>
 
-               <button v-if="!sendingFormData" type="button"
-                     class="v-btn v-btn--flat theme--light primary--text  close-modal-btn">
-                        <div class="v-btn__content">
-                              <slot  name="close-modal">
-                              </slot>
-                        </div> 
-            </button> 
+               <span>
+                     <slot name="close-modal">
+                     </slot>
+                </span>
          
                <button :disabled="sendingFormData"
                @click="dataFormHandler()" 
@@ -262,6 +259,8 @@
          
             //obtenmos la data
             const formData = this.getDataForm(objectForm);
+            formData.append("id", this.updatedId);
+
             //enviamos la data al server
             this.sendDataForm(this.url,formData); 
          },
@@ -285,7 +284,7 @@
                formData.append(key,  objectForm[key].value);
             }
 
-     
+
             return formData;
          },
 

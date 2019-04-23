@@ -8,19 +8,26 @@ use appLibros\Http\Controllers\HelperCtrl;
 
 use appLibros\Models\BookCategoryMdl;
 use Illuminate\Support\Facades\Validator;
-
+use Session;
 
 class BookCategoryCtrl extends Controller
 {
     
     public function index()
     {
-       // var_dump($data);
-       $fileConfig =  HelperCtrl::getFileConfig();
+    
+        $fileConfig =  HelperCtrl::getFileConfig();
         return view('admins/bookCategories/index', ["fileConfig"=>$fileConfig]);
     }
 
 
+
+     /**
+     * obtener los datos de una categoria
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function getAll()
     {
         $data  =  BookCategoryMdl::all('bookCategoryId as id','name', 'userCreateId', 'state');
@@ -54,6 +61,8 @@ class BookCategoryCtrl extends Controller
         try {
             $bookCategoryMdl = new BookCategoryMdl;
             $bookCategoryMdl->name = $request->name;
+            $bookCategoryMdl->userCreateId = Session::get("userId");
+             
             $bookCategoryMdl->save();
     
             $dataEmit = array(

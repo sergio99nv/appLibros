@@ -92,7 +92,9 @@
                   guardando ...
                </div>
 
-               <button :disabled="sendingFiles<=0"
+               <button @click="()=> sendingFormData = false"
+                   v-show="sendingFiles > 0"
+                    :disabled="sendingFiles<=0"
                    type="button" 
                    class="v-btn v-btn--depressed v-btn--small theme--light">
                   <div class="v-btn__content  blue--text">
@@ -106,18 +108,13 @@
           
 
           <!-- accciones(btns) -->
-         <div class="v-card__actions">
+         <div  class="v-card__actions"  v-show="!sendingFormData">
                
                <div class="spacer"></div>
-
-               <button v-if="!sendingFormData" type="button"
-                     class="v-btn v-btn--flat theme--light primary--text  close-modal-btn">
-                        <div class="v-btn__content">
-                              <slot  name="close-modal">
-                              </slot>
-                        </div> 
-            </button> 
-         
+                  <span>
+                     <slot name="close-modal">
+                     </slot>
+                  </span>
                <button :disabled="sendingFormData"
                @click="dataFormHandler()" 
                type="button"

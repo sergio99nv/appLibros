@@ -190,28 +190,22 @@ class BookCtrl extends Controller
         }
        
         try {
-           // $currenPath = self::$fileConfig["file"]["folder"];
-            //$newPath =  $currenPath;
-            //$newFileName =  self::moveFile( $request->file, $currenPath , $bookId, $newPath);
-
-           
+        
             $newBookMdl = new BookMdl();
-            $bookId =$newBookMdl->updateBook($request);
+            $bookId =$newBookMdl->updateBook($request->id, $request);
             
     
             $dataEmit = array(
-               "id" => $bookId,
               "name" =>  $request->name,
               "description" => $request->description,
               "author" => $request->author,
               "file" => $request->file,
-              "cover" => $request->cover,
-              "bookCategoryId"=> $request->bookCategoryId,
-              "bookYear" => $request->bookYear,
-              "state" => 1
+              "cover" => $request->cover
             );
+
+
             return response()->json([
-                 "dataEmit" =>  $dataEmit,
+                "dataEmit" =>  $dataEmit,
                 'msg' => "ok",
                 'error' =>  false
             ]);

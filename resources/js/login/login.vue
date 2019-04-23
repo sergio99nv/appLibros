@@ -1,14 +1,25 @@
-<style>
+<style scoped>
+   .login{
+      max-width: 500px;
+      margin-left: auto;
+      margin-right:  auto;
+      margin-top : 20px;
+   }
+
+   .error-server{
+      padding: 0 12px;
+   }
 
 </style>
-
 <template>
-   <div class="store">
+   <div class="login">
         <div class="v-card v-sheet theme--light">
           
          <!-- titulo del formulario -->
           <div class="v-card__title headline">
-             <slot name="title-main"></slot>
+                {{
+                     title  || "Inicio de sesión"
+                }}
           </div>
 
             <!-- mostar un error  -->
@@ -16,47 +27,45 @@
                   {{  errorForm.msg}}
             </div>
          
-           <!--  campos del formulario -->
-          <section class="v-card__text store-form" v-show="!sendingFormData">
-              
-              <div class=" store-form__item"  v-for="(item, index) in fieldForm"    :key="index">
-                 <!-- si es input text -->
-                  <v-text-field
-                        :type="item.type"
-                        is="v-text-field" 
-                        :error="form[item.field].error"
-                        :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
-                        :rules="formSended ? [form[item.field].rules.required] : []"
-                        v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
-                        v-model="form[item.field].value"
-                        :label="item.label"
-                        >
-                  </v-text-field>
- 
+         <form action=""   @submit.prevent="dataFormHandler()" >
 
-                 
-
-              </div>
-        </section> 
- 
-          
-
-          <!-- accciones(btns) -->
-         <div class="v-card__actions">
-               
-               <div class="spacer"></div>
- 
-         
-               <button :disabled="sendingFormData"
-               @click="dataFormHandler()" 
-               type="button"
-               class="v-btn theme--dark primary">
-                  <div class="v-btn__content">
-                        guardar
+                     <!--  campos del formulario -->
+               <section class="v-card__text store-form" v-show="!sendingFormData">
+                  
+                  <div class=" store-form__item"  v-for="(item, index) in fieldForm"    :key="index">
+                     <!-- si es input text -->
+                        <v-text-field
+                              :type="item.type"
+                              is="v-text-field" 
+                              :error="form[item.field].error"
+                              :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
+                              :rules="formSended ? [form[item.field].rules.required] : []"
+                              v-on="form[item.field].error ? { '~keyup': () => inputHideError(item.field) } : {}"
+                              v-model="form[item.field].value"
+                              :label="item.label"
+                              >
+                        </v-text-field>
                   </div>
-            </button>
-         </div>
+            </section> 
+      
+
+            <!-- accciones(btns) -->
+            <div class="v-card__actions">
+                  
+                  <div class="spacer"></div>
+   
+      
+                  <button :disabled="sendingFormData"
+                
+                  type="submit"
+                  class="v-btn theme--dark primary">
+                     <div class="v-btn__content">
+                           guardar
+                     </div>
+               </button>
+            </div>
          
+         </form>
       </div>
    </div>
 </template>

@@ -33,11 +33,19 @@ Route::group(['prefix'=>'register'], function(){
  *  Rutas del estudiante
  * 
  */
-Route::group(['middleware' => 'StudentSession'],function(){  
- 
+// Route::group(['middleware' => 'StudentSession'],function(){  
+// });
     
     Route::get('/categories/list',  'Students\AppCtrl@index');
-});
+
+
+    Route::get('/categories/',  'Students\BookCategoryCtrl@getCategories');
+    Route::get('/categories/listbooks/{categoryId}',  'Students\BookCategoryCtrl@getCategories');
+    Route::get('/categories/listbooks/{categoryId}/{nombre?}/{author?}',  'Students\BookCategoryCtrl@getCategories');
+
+
+    Route::get('/categories/book/{bookId}',  'Students\BookCategoryCtrl@getBook');
+
 
    
  

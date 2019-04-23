@@ -3,7 +3,7 @@
 @section('title', 'usuarios')
 
 @section('content')
-ss
+ 
       <div id="app">
          <users></users>
     </div>

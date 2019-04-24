@@ -28,7 +28,7 @@
     
 
        @if(Session::has("userType") && Session::get("userType") === "admin" ) 
-           @include('admins/layouts.menu_aside') 
+           @include('students/layouts.menu_aside') 
        @endif
 
 

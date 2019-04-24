@@ -5,11 +5,11 @@
 
 @section('content')
      <div>
-         <h1>Se ha registrado</h1>
+         <h1>Se ha registrado exitosamente</h1>
      </div>    
 
      <div>
-         <a href="/login">Iniciar sesion</a>
+         <a href="/login">Iniciar sesión</a>
      </div>
 @endsection
 

@@ -1,0 +1,38 @@
+body{
+    background-color: var( --main-content-bg);
+}
+
+
+.cat-w-books-aside{
+    display: none;
+}
+
+.cat-w-books-wrapper{
+    max-width: 1100px;
+    margin: 4rem auto 0 auto;
+}
+
+.cat-w-books-books{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    grid-gap: 5px 15px;
+}
+
+@media only screen and (min-width: 992px) {
+    .cat-w-books-aside{
+        display: block;
+        position: fixed;
+        width:  320px;
+        max-width:  320px;
+    }
+
+    .cat-w-books-books{
+        grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+        grid-gap: 50px 45px;
+    }
+
+    .cat-w-books-books{
+        margin-left: 350px;
+    }
+
+  }

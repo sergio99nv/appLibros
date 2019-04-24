@@ -1,10 +1,20 @@
+
+:root{
+   --main-content-bg : #f7f7f7;
+}
+
 body{
     font-family: 'Noto Sans', sans-serif;
+}
+
+img{
+    max-width: 100%;
 }
 
 .main-nav{
     height: 64px;
     line-height: 64px;
+    background-color: white;
 }
 
 .main-nav__content{

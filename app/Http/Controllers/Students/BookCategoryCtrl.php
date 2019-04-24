@@ -7,6 +7,7 @@ use appLibros\Http\Controllers\Controller;
 
 use appLibros\Models\BookCategoryMdl;
 use appLibros\Models\BookMdl;
+use appLibros\Http\Controllers\HelperCtrl;
 
 
 class BookCategoryCtrl extends Controller
@@ -26,16 +27,37 @@ class BookCategoryCtrl extends Controller
     {
         $categories  =  BookCategoryMdl::all('bookCategoryId as id','name');
 
-        var_dump(
-            $categories
-        );
+        $categoryId= 1;
+        
+        $books  = BookMdl::where("bookCategoryId",  $categoryId)->get([
+                                                    'bookId as id',
+                                                    'name',
+                                                    'description', 
+                                                    'author', 
+                                                    'bookYear', 
+                                                    'file',
+                                                    'cover'
+                                                ]);
+
+
+        $fileConfig =  HelperCtrl::getFileConfig();
+        $fileUlrs = array("image"=> $fileConfig["image"]["urlPath"]); 
+
+        return view('students/books/cagoryWithbooks', 
+                                                array(
+                                                     "categories"=>$categories,
+                                                     "books"=>$books,
+                                                     "fileUlrs" =>  $fileUlrs
+                                                     )
+                                            );
+        
        
     }
 
 
 
      /**
-     * guardar un nuevo libro
+     *  
      *
      * @param  Request  $request
      * @return Response
@@ -67,7 +89,7 @@ class BookCategoryCtrl extends Controller
 
 
       /**
-     * guardar un nuevo libro
+     *  
      *
      * @param  Request  $request
      * @return Response

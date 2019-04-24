@@ -38,13 +38,9 @@ mix.js('resources/js/admins/bookCategories/app.js',
    mix.js('resources/js/admins/login/app.js', 
    'public/js/admins/login/app.js');
 
-   //login students
-   mix.js('resources/js/students/login/app.js', 
-   'public/js/students/login/app.js');
+ 
 
-   //register students
-   mix.js('resources/js/students/register/app.js', 
-   'public/js/students/register/app.js');
+
 
   //menu
   mix.js('resources/js/app.js', 
@@ -57,3 +53,17 @@ mix.js('resources/js/admins/bookCategories/app.js',
 
  mix.styles('resources/css/admin/login.css', 'public/css/admin/login.css')
    //.sass('resources/sass/app.scss', 'public/css');
+
+
+
+     //login students
+     mix.js('resources/js/students/login/app.js', 
+     'public/js/students/login/app.js');
+  
+     //register students
+     mix.js('resources/js/students/register/app.js', 
+     'public/js/students/register/app.js');
+
+
+     mix.styles('resources/css/students/cat-w-books.css',
+             'public/css/students/cat-w-books.css')

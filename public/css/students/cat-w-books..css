@@ -1,0 +1,8 @@
+
+
+@media only screen and (min-width: 992px) {
+    .cat-w-books{
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+  }

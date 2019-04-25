@@ -16,15 +16,17 @@
         @yield('cssFile')
     </head>
     <body>
-       <nav class="main-nav elevation-2">
+      <div class="navbar-fixed">
+        <nav class="main-nav elevation-2">
 
             <div class="main-nav__content">
             @if(Session::has("userType") && Session::get("userType") === "admin" ) 
                 <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
-             @endif
-                 <img class="main-nav__logo" src="/img/logo.png" alt="">
+            @endif
+                <img class="main-nav__logo" src="/img/logo.png" alt="">
             </div>
-       </nav>
+            </nav>
+      </div>
     
 
        @if(Session::has("userType") && Session::get("userType") === "admin" ) 

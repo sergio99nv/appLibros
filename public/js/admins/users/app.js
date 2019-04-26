@@ -81603,6 +81603,29 @@ function () {
         }, time);
       } catch (error) {}
     }
+  }, {
+    key: "getCssProperty",
+    value: function getCssProperty(elem, property) {
+      return window.getComputedStyle(elem, null).getPropertyValue(property);
+    }
+  }, {
+    key: "addEvent",
+    value: function addEvent(object, type, callback) {
+      if (object == null || typeof object == 'undefined') return;
+
+      if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+      } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+      } else {
+        object["on" + type] = callback;
+      }
+    }
+  }, {
+    key: "matchMediaMinWidth",
+    value: function matchMediaMinWidth(size) {
+      return window.matchMedia("(min-width: ".concat(size, "px)")).matches;
+    }
   }]);
 
   return AppHelper;

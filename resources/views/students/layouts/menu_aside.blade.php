@@ -1,14 +1,14 @@
 
- <div id="asideMainMenuOverlay"  class="v-overlay v-overlay--absolute ">
+ <div id="asideMainMenuOverlay"  class="v-overlay  v-overlay--absolute asideMainMenuOverlay ">
  </div>
 
- 
-<aside id="asideMainMenu" class="asideMainMenu v-navigation-drawer
-         v-navigation-drawer--absolute 
-         v-navigation-drawer--open 
-         v-navigation-drawer--temporary 
+  
+    <aside id="asideMainMenu" class="asideMainMenu v-navigation-drawer
+            v-navigation-drawer--absolute 
+            v-navigation-drawer--open 
+            v-navigation-drawer--temporary 
          theme--light" data-booted="true"
-          style="height: 100%; margin-top: 0px;">
+          >
           
             <div role="list" class="v-list pa-1 theme--light">
                 <div role="listitem">
@@ -22,20 +22,9 @@
                     </div>
                 </div>
             </div>
-            <div role="list" class="v-list pt-0 v-list--dense theme--light">
-                <hr class="v-divider theme--light">
+             
                 <div role="listitem">
-                    <a  href="/admins/bookCategories" class="v-list__tile v-list__tile--link theme--light">
-                        <div class="v-list__tile__action"><i aria-hidden="true" class="v-icon material-icons theme--light">dashboard</i></div>
-                        <div class="v-list__tile__content">
-                            <div class="v-list__tile__title">
-                                   Categorias
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div role="listitem">
-                    <a href="/admins/users"  class="v-list__tile v-list__tile--link theme--light">
+                    <a href="/books"  class="v-list__tile v-list__tile--link theme--light">
                         <div class="v-list__tile__action"><i aria-hidden="true" class="v-icon material-icons theme--light">question_answer</i></div>
                         <div class="v-list__tile__content">
                             <div class="v-list__tile__title">Libros</div>

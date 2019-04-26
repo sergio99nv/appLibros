@@ -2,10 +2,7 @@ body{
     background-color: var( --main-content-bg);
 }
 
-
-.cat-w-books-aside{
-    display: none;
-}
+ 
 
 .cat-w-books-wrapper{
     width: 95%;
@@ -17,7 +14,7 @@ body{
 
 .cat-w-books-books{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(135px, 155px));
     grid-gap: 20px 20px;
     margin: 0 auto;
  
@@ -25,41 +22,24 @@ body{
 
 
 @media only screen and (min-width: 992px) {
-
-
-    .cat-w-books-aside{
-        display: block;
-        position: fixed;
-        width: 30%;
-        max-width:  270px;
-        min-width: 100px;
-        overflow-y: scroll;
+    .cat-w-books-wrapper{
+        max-width: 915px;
     }
 
+ 
     .cat-w-books-books{
         /* grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); */
-        grid-gap: 50px 30px;
-        margin-left: 300px;
+        grid-gap: 50px 40px;
+      
     }
   }
 
-
-
-  @media only screen and (min-width:1200px) {
-        .cat-w-books-wrapper{
-            max-width: 1200px;
-        }
-
-        .cat-w-books-books{
-            margin-left: 320px;
-        }
-    
-    }
+ 
   
 
-  @media only screen and (min-width:1400px) {
+  @media only screen and (min-width:1300px) {
     .cat-w-books-wrapper{
-        max-width: 1400px;
+        max-width: 1300px;
     }
 
     

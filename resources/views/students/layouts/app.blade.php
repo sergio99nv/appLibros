@@ -20,7 +20,7 @@
         <nav class="main-nav elevation-2">
 
             <div class="main-nav__content">
-            @if(Session::has("userType") && Session::get("userType") === "admin" ) 
+            @if(Session::has("userType") && Session::get("userType") === "student" ) 
                 <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
             @endif
                 <img class="main-nav__logo" src="/img/logo.png" alt="">
@@ -29,18 +29,18 @@
       </div>
     
 
-       @if(Session::has("userType") && Session::get("userType") === "admin" ) 
+       @if(Session::has("userType") && Session::get("userType") === "student" ) 
            @include('students/layouts.menu_aside') 
        @endif
 
 
-        <main>
+        <main id="main-app-content" class="main-app-content">
             @yield('content')
         </main>
 
         
        
-        @if(Session::has("userType") && Session::get("userType") === "admin" ) 
+        @if(Session::has("userType") && Session::get("userType") === "student" ) 
               <script src="/js/app.js"></script>
        @endif
        @yield('scripts')

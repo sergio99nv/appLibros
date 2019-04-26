@@ -90,22 +90,144 @@
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _appHelper__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./appHelper */ "./resources/js/appHelper.js");
 
 document.addEventListener("DOMContentLoaded", function (event) {
+  var showDeskMenuDeskMedia = 1200;
+  var mainAppContent = document.querySelector("#main-app-content");
   var asideMainMenuOverlay = document.querySelector("#asideMainMenuOverlay");
   var asideMainMenu = document.querySelector("#asideMainMenu");
   var mainNavBtnMenu = document.querySelector("#mainNavBtnMenu");
+  var showDeskMenu = _appHelper__WEBPACK_IMPORTED_MODULE_0__["default"].matchMediaMinWidth(showDeskMenuDeskMedia);
+  console.log(showDeskMenu);
+
+  if (showDeskMenu) {
+    asideMainMenu.classList.add("asideMainMenu--open");
+    mainAppContent.classList.add("mainAppContent--open");
+  }
+
   mainNavBtnMenu.addEventListener("click", function () {
-    asideMainMenu.style.transform = "translateX(0)";
-    asideMainMenuOverlay.classList.add("v-overlay--active");
+    var hasCssClass = asideMainMenu.classList.contains("asideMainMenu--open");
+
+    if (hasCssClass) {
+      asideMainMenu.classList.remove("asideMainMenu--open");
+      mainAppContent.classList.remove("mainAppContent--open");
+      asideMainMenuOverlay.classList.remove("v-overlay--active");
+    } else {
+      asideMainMenu.classList.add("asideMainMenu--open");
+      mainAppContent.classList.add("mainAppContent--open");
+      asideMainMenuOverlay.classList.add("v-overlay--active");
+    }
   });
   asideMainMenuOverlay.addEventListener("click", function () {
+    asideMainMenu.classList.remove("asideMainMenu--open");
+    mainAppContent.classList.remove("mainAppContent--open");
     asideMainMenuOverlay.classList.remove("v-overlay--active");
-    asideMainMenu.style.transform = "translateX(-100%)";
+  });
+  _appHelper__WEBPACK_IMPORTED_MODULE_0__["default"].addEvent(window, "resize", function () {
+    var showDeskMenu = _appHelper__WEBPACK_IMPORTED_MODULE_0__["default"].matchMediaMinWidth(showDeskMenuDeskMedia);
+
+    if (showDeskMenu) {
+      asideMainMenu.classList.add("asideMainMenu--open");
+      mainAppContent.classList.add("mainAppContent--open");
+    } else {
+      asideMainMenu.classList.remove("asideMainMenu--open");
+      mainAppContent.classList.remove("mainAppContent--open");
+      asideMainMenuOverlay.classList.remove("v-overlay--active");
+    }
   });
 });
+
+/***/ }),
+
+/***/ "./resources/js/appHelper.js":
+/*!***********************************!*\
+  !*** ./resources/js/appHelper.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var AppHelper =
+/*#__PURE__*/
+function () {
+  function AppHelper() {
+    _classCallCheck(this, AppHelper);
+  }
+
+  _createClass(AppHelper, null, [{
+    key: "markHtmlElement",
+
+    /**
+     * 
+     * @param {html} refHtml  El elemento al q le apliramos las clases(CSS)
+     * @param {Array} cssClasses  Contine el listado de clases(CSS)
+     * @param {Number} time La cantidad de tiempo q durara el efecto 
+     */
+    value: function markHtmlElement(refHtml, cssClasses) {
+      var time = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3500;
+
+      try {
+        var _refHtml$classList;
+
+        (_refHtml$classList = refHtml.classList).add.apply(_refHtml$classList, _toConsumableArray(cssClasses));
+
+        setTimeout(function () {
+          var _refHtml$classList2;
+
+          (_refHtml$classList2 = refHtml.classList).remove.apply(_refHtml$classList2, _toConsumableArray(cssClasses));
+        }, time);
+      } catch (error) {}
+    }
+  }, {
+    key: "getCssProperty",
+    value: function getCssProperty(elem, property) {
+      return window.getComputedStyle(elem, null).getPropertyValue(property);
+    }
+  }, {
+    key: "addEvent",
+    value: function addEvent(object, type, callback) {
+      if (object == null || typeof object == 'undefined') return;
+
+      if (object.addEventListener) {
+        object.addEventListener(type, callback, false);
+      } else if (object.attachEvent) {
+        object.attachEvent("on" + type, callback);
+      } else {
+        object["on" + type] = callback;
+      }
+    }
+  }, {
+    key: "matchMediaMinWidth",
+    value: function matchMediaMinWidth(size) {
+      return window.matchMedia("(min-width: ".concat(size, "px)")).matches;
+    }
+  }]);
+
+  return AppHelper;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (AppHelper);
 
 /***/ }),
 

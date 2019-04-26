@@ -16,19 +16,37 @@
         @yield('cssFile')
     </head>
     <body>
-      <div class="navbar-fixed">
-        <nav class="main-nav elevation-2">
 
-            <div class="main-nav__content">
-            @if(Session::has("userType") && Session::get("userType") === "student" ) 
-                <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
-            @endif
-                <img class="main-nav__logo" src="/img/logo.png" alt="">
+    <!-- nav -->
+      <div class="navbar-fixed elevation-2  white">
+        <nav class="nav-main">
+
+            <div class="nav-main-wrapper">
+                <section class="nav-main-col">
+                        @if(Session::has("userType") && Session::get("userType") === "student" ) 
+                        <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
+                    @endif
+                        <img class="main-nav__logo" src="/img/logo.png" alt="">
+                </section>
+
+                @if(isset( $categories))
+                <section class="nav-main-form" id="nav-main-form">
+                    @component('students/components/searchForm', ["categories" => $categories,
+                                                            "actionUrl" => "/books/search"])
+
+                    @endcomponent  
+                </section>
+                <i class="material-icons nav-main-i-search"  id="nav-main-i-search">
+                                search
+                </i>
+                @endif 
             </div>
+
+            
             </nav>
       </div>
     
-
+      <!-- menu vetical -->
        @if(Session::has("userType") && Session::get("userType") === "student" ) 
            @include('students/layouts.menu_aside') 
        @endif
@@ -42,7 +60,7 @@
        
         @if(Session::has("userType") && Session::get("userType") === "student" ) 
               <script src="/js/app.js"></script>
-       @endif
+         @endif
        @yield('scripts')
     </body>
 </html>

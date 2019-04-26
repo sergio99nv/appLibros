@@ -3,47 +3,51 @@
  </div>
 
   
-    <aside id="asideMainMenu" class="asideMainMenu v-navigation-drawer
-            v-navigation-drawer--absolute 
-            v-navigation-drawer--open 
-            v-navigation-drawer--temporary 
-         theme--light" data-booted="true"
-          >
+    <aside id="asideMainMenu" class="white main-menu ">
           
-            <div role="list" class="v-list pa-1 theme--light">
-                <div role="listitem">
-                    <div class="v-list__tile v-list__tile--avatar theme--light">
-                        <div class="v-list__tile__avatar">
-                            <div class="v-avatar" style="height: 40px; width: 40px;"><img src="https://randomuser.me/api/portraits/men/85.jpg"></div>
-                        </div>
-                        <div class="v-list__tile__content">
-                            <div class="v-list__tile__title">Pepe</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             
-                <div role="listitem">
-                    <a href="/books"  class="v-list__tile v-list__tile--link theme--light">
-                        <div class="v-list__tile__action"><i aria-hidden="true" class="v-icon material-icons theme--light">question_answer</i></div>
-                        <div class="v-list__tile__content">
-                            <div class="v-list__tile__title">Libros</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="v-navigation-drawer__border"></div>
-            <hr class="v-divider theme--light">
+        
+            <div class="main-menu-item">
+                    <a class="main-menu-item-link" href="/books">
+                        
+                        <i class="material-icons  main-menu-item-link__i">
+                            book
+                        </i>
 
-            <div role="list" class="v-list pt-0 v-list--dense theme--light">
-                 
-                <div role="listitem">
-                    <a href="/admins/login/closeSession" class="v-list__tile v-list__tile--link theme--light">
-                        <div class="v-list__tile__action"><i aria-hidden="true" class="v-icon material-icons theme--light">question_answer</i></div>
-                        <div class="v-list__tile__content">
-                            <div class="v-list__tile__title">Salir</div>
-                        </div>
+                        <span>Inicio</span>
                     </a>
-                </div>
-            </div>
-        </aside>
+             </div>
+               
+              
+             @if(isset($categories))
+
+                <div class="v-navigation-drawer__border"></div>
+                <hr class="v-divider theme--light"> 
+
+                <div class="main-menu-list">
+                        <div class="main-menu-list-title">
+                            
+                    
+                            Categorías
+                        </div>
+                        <section class="main-menu-list-data">
+                                
+                                @foreach($categories as $category)
+                                <div class="main-menu-list-data__item">
+                                    <a href="{{ '/books/'.$category->id }}" class="main-menu-list-data__item__link"> 
+                                        {{
+                                            $category->name
+                                        }}
+        
+                                    </a>
+
+                                </div>
+                            @endforeach
+                                
+                            
+                        </section>
+                </div> 
+            @endif
+           
+    </aside>
+
+        <!--href="/books"    href="/login/closeSession" -->

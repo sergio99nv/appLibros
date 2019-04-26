@@ -13,12 +13,14 @@ class LoginCtrl extends Controller
 {
    //ESTUDIANTE
 
+   private static $redirecTo = "books";
 
    public function index()
    {
 
+        $redirecTo = self::$redirecTo;
        if(Session::get("userType") == "student"){  
-           return redirect('/main'); 
+           return redirect("/{$redirecTo}"); 
        } 
 
 
@@ -76,7 +78,7 @@ class LoginCtrl extends Controller
        
        return response()->json([
            'error' =>  false,
-           "redirectTo" =>  "main"
+           "redirectTo" =>  self::$redirecTo
        ]);
    }
 

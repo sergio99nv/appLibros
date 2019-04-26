@@ -1,0 +1,17 @@
+.book-info-wrapper{
+    width: 95%;
+    margin: 2rem 0;
+    padding-left: 5rem;
+    max-width: 700px;
+}
+
+.book-info{
+     display: grid;
+     grid-template-columns: 100px 1fr;
+     grid-gap: 0 15px;
+     margin-bottom: 1rem;
+}
+
+.book-actions{
+    margin-bottom: 1rem;
+}

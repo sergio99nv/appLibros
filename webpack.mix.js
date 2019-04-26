@@ -67,3 +67,8 @@ mix.js('resources/js/admins/bookCategories/app.js',
 
      mix.styles('resources/css/students/cat-w-books.css',
              'public/css/students/cat-w-books.css')
+
+      
+    
+    mix.styles('resources/css/students/book-info.css',
+    'public/css/students/book-info.css')

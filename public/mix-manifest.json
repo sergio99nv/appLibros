@@ -7,5 +7,6 @@
     "/js/students/register/app.js": "/js/students/register/app.js",
     "/css/app_main.css": "/css/app_main.css",
     "/css/admin/login.css": "/css/admin/login.css",
-    "/css/students/cat-w-books.css": "/css/students/cat-w-books.css"
+    "/css/students/cat-w-books.css": "/css/students/cat-w-books.css",
+    "/css/students/book-info.css": "/css/students/book-info.css"
 }

@@ -65,5 +65,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     });
 
+    //busqueda mobile
+
+    const navMainIconSearch  = document.querySelector("#nav-main-i-search");
+    const navMainForm  = document.querySelector("#nav-main-form");
+    const navMainFormClass = "nav-main-form--full";
+        
+    navMainIconSearch.addEventListener("click", ()=>{
+      const hasCssClass =   navMainForm.classList.contains(navMainFormClass)
+ 
+      if(hasCssClass){
+        navMainForm.classList.remove(navMainFormClass)
+        
+        
+      }else{
+        navMainForm.classList.add(navMainFormClass)
+      }
+    
+       
+    });
+
+
+
     
 });

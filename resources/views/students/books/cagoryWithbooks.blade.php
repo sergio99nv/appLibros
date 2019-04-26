@@ -8,28 +8,29 @@
 
 @section('content')
       
-         <form method="post"   action="/searchBookAuthor">
-           <span>@csrf   {{ csrf_field() }} </span>
-
-            <input name="bookName" type="search" placeholder="Buscar libro o autor">
-         </form>
-
-
         <section class="cat-w-books-wrapper">
               
 
                <div>
-                  <h1>
+                        @if(isset($categoryName) && $categoryName!=="todos")
+                                <h1>
+                                {{$categoryName}}
+                                </h1>
+                        @elseif(isset($isSearch) && $isSearch == "true")
+                                <h2>
+                                     Resultados de busqueda   
+                                </h2>
+
+                        @endif
+               </div>
+               <div>
+                   <h4>
                         {{
-                               count($books)
-                        }}
-                       
-                      Resultados
-                      @if($isSearch == "true")
-                         <span> de busqueda</span>
-                      @endif
-                  </h1>  
-                     
+                           count($books)     
+                        }}   
+                         resultados
+                   </h4>     
+
                </div>
                 
 
@@ -37,7 +38,7 @@
                 <section  class="cat-w-books-books">
                         @foreach($books as $bookItem)
                                 <article>
-                                <a class="">
+                                <a class="" href="{{ '/book/info/'.$bookItem->id }}">
                                         
                                         <div class="">
                                                 <div>               

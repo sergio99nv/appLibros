@@ -39,9 +39,12 @@ Route::group(['prefix'=>'register'], function(){
     // Route::get('/categories/list',  'Students\AppCtrl@index');
 
 
-    Route::get('/books',  'Students\BookCategoryCtrl@getCategories');
+    Route::get('/books',  'Students\BookCategoryCtrl@getBooks');
+    Route::get('/books/{category?}',  'Students\BookCategoryCtrl@getBooks');
 
-    Route::post('/searchBookAuthor',  'Students\BookCategoryCtrl@searchBookAuthor');
+    Route::post('/books/search',  'Students\BookCategoryCtrl@search');
+
+    Route::get('/book/info/{bookId}',  'Students\BookCategoryCtrl@getBookInfo');
 
 
 

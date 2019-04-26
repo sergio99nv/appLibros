@@ -140,6 +140,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
       mainAppContent.classList.remove("mainAppContent--open");
       asideMainMenuOverlay.classList.remove("v-overlay--active");
     }
+  }); //busqueda mobile
+
+  var navMainIconSearch = document.querySelector("#nav-main-i-search");
+  var navMainForm = document.querySelector("#nav-main-form");
+  var navMainFormClass = "nav-main-form--full";
+  navMainIconSearch.addEventListener("click", function () {
+    var hasCssClass = navMainForm.classList.contains(navMainFormClass);
+
+    if (hasCssClass) {
+      navMainForm.classList.remove(navMainFormClass);
+    } else {
+      navMainForm.classList.add(navMainFormClass);
+    }
   });
 });
 
@@ -238,7 +251,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/sergio99nv/appLibros/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/boxhn/apps/appLibros/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

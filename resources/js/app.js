@@ -15,8 +15,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
      const showDeskMenu =  AppHelper.matchMediaMinWidth(showDeskMenuDeskMedia)
-     console.log(showDeskMenu)
-     if(showDeskMenu){
+     const pathName = window.location.pathname;
+      
+     if(showDeskMenu && pathName.startsWith("/books") === true){
          asideMainMenu.classList.add("asideMainMenu--open")
          mainAppContent.classList.add("mainAppContent--open")
      }

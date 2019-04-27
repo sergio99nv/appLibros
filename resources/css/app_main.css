@@ -254,7 +254,9 @@ nav .nav-main-wrapper {
 
    
 
-  
+  .asideMainMenuOverlay{
+      display: none;
+  }
 
 
     

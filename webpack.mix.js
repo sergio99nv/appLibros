@@ -65,6 +65,12 @@ mix.js('resources/js/admins/bookCategories/app.js',
      'public/js/students/register/app.js');
 
 
+      //commentary
+     mix.js('resources/js/students/commentary/app.js', 
+     'public/js/students/commentary/app.js');
+
+
+
      mix.styles('resources/css/students/cat-w-books.css',
              'public/css/students/cat-w-books.css')
 

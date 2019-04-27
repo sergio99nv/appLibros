@@ -77,18 +77,15 @@
              </section> 
  
 
-       <section class="book-comentaries">
+       <section id="appCommentaries" class="book-comentaries">
 
-            comentarios
-
-            <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab inventore molestias voluptates beatae ea non aliquid, sint asperiores rerum, voluptatem ullam ipsa iste ipsam autem nam exercitationem ex explicabo repellendus!
-            </div>
-
+            <commentaries-list :book-id="@json($bookInfo->id)"></commentaries-list>
        </section>
 @endsection
 
 
 @section('scripts')
-    
+
+<script src="/js/students/commentary/app.js"></script>   
+   
 @endsection

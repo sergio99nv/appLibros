@@ -46,6 +46,13 @@ Route::group(['prefix'=>'register'], function(){
 
     Route::get('/book/info/{bookId}',  'Students\BookCategoryCtrl@getBookInfo');
 
+    Route::group(['prefix' => 'commentaries'], function(){
+        Route::post('/getAll',  'Students\CommnetaryCtrl@getCommentaries');
+        Route::post('/store',  'Students\CommnetaryCtrl@store');
+        Route::post('/update',  'Students\CommnetaryCtrl@update');
+    });
+   
+    
 
 
    // Route::get('/categories/listbooks/{categoryId}',  'Students\BookCategoryCtrl@getCategories');

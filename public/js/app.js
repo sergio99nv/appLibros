@@ -104,9 +104,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var asideMainMenu = document.querySelector("#asideMainMenu");
   var mainNavBtnMenu = document.querySelector("#mainNavBtnMenu");
   var showDeskMenu = _appHelper__WEBPACK_IMPORTED_MODULE_0__["default"].matchMediaMinWidth(showDeskMenuDeskMedia);
-  console.log(showDeskMenu);
+  var pathName = window.location.pathname;
 
-  if (showDeskMenu) {
+  if (showDeskMenu && pathName.startsWith("/books") === true) {
     asideMainMenu.classList.add("asideMainMenu--open");
     mainAppContent.classList.add("mainAppContent--open");
   }
@@ -251,7 +251,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/boxhn/apps/appLibros/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/sergio99nv/appLibros/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

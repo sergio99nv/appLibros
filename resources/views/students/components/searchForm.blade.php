@@ -1,14 +1,14 @@
 <form method="post"   action="{{ $actionUrl }}">
         <span>@csrf   {{ csrf_field() }} </span>   
         
-        <div class="f-search-clsoe">
+        <div class="f-search-close text-xs-right">
                 <i class="material-icons">
                   close
               </i>
         </div>
         <div class="f-search">
-                <select class="f-search__select" name="categoryId">
-                        <option value="0" disabled>Categoria</option>
+                <select class="f-search__select  select--normal" name="categoryId">
+                        <option value="0" selected disabled>Categoria</option>
                         <option value="0">todos</option>
 
                         @foreach($categories as $category)

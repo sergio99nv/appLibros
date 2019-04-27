@@ -57,6 +57,8 @@ class LoginCtrl extends Controller
 
        $usuario = StudentMdl::select('studentId',
                                     'email',
+                                    'firstName',
+                                    'lastName',
                                     'phoneNumber')
        ->where('email', $username)
        ->where('password', $password)
@@ -74,7 +76,9 @@ class LoginCtrl extends Controller
         }
 
 
-       $this->createUserSession($usuario->studentId, "student");
+       $userName  = $usuario->firstName." ".$usuario->lastName;
+
+       $this->createUserSession($usuario->studentId, "student", $userName);
        
        return response()->json([
            'error' =>  false,
@@ -90,10 +94,13 @@ class LoginCtrl extends Controller
     * @param Int $userId
     * @param String $userType el tipo de usuario
     */
-   private function createUserSession(int $userId, string $userType){
+   private function createUserSession(int $userId,
+                                    string $userType, 
+                                    string  $userName ) {
       Session::flush(); 
       Session(['userId' => $userId]);
       Session(['userType' => $userType]);
+      Session(['userName' => $userName]);
    }
 
    

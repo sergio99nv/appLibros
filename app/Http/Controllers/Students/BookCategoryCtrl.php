@@ -74,7 +74,7 @@ class BookCategoryCtrl extends Controller
      */
     public function search(Request $request)
     {
-        echo $request->categoryId;
+        
         $rules = [
             "bookName" => "required",
             "categoryId" => "required|int|min:-1"  

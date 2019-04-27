@@ -20,10 +20,18 @@ body{
  
 }
 
+.cat-w-books-wrapper__row{
+    margin-bottom: 20px;
+}
+
+.cat-w-books-wrapper__row  h1{
+    text-transform: capitalize;
+}
 
 @media only screen and (min-width: 992px) {
     .cat-w-books-wrapper{
         max-width: 915px;
+        padding-top: 2rem;
     }
 
  

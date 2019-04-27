@@ -1,8 +1,8 @@
 .book-info-wrapper{
     width: 91%;
     margin: 0 auto;
-    /* padding-left: 5rem; */
-    /* max-width: 700px; */
+    padding-top: 2rem;
+    max-width: 750px;
 }
 
 .book-info{
@@ -19,3 +19,13 @@
 .book-comentaries{
     margin-top: 2rem;
 }
+
+
+@media only screen and (min-width: 900px) {
+    .book-info-wrapper{
+        margin-left: 100px;
+        padding-right: 100px;
+        max-width: 900px;
+    }
+     
+  }

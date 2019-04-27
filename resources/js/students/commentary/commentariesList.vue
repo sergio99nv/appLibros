@@ -1,16 +1,37 @@
-<style>
+<style scoped>
+
+    .wrapper-commentaries{
+        margin-top: 1rem;
+    }
+
+    .wrapper-commentaries__count{
+        margin-bottom: 20px;
+    }
+
+    @media only screen and (min-width: 992px) {
+        .wrapper-commentaries{
+            margin-top: 5rem;
+        }
+  }
 
 </style>
 
 
 <template>
-    <div>
+    <div class="wrapper-commentaries">
+
+         <div class="wrapper-commentaries__count">
+            {{
+                commentariesList.length
+            }}
+            comentarios  
+        </div>
         <commentary @newCommentaryEvent="newCommentaryEventHandler" 
             :book-id="bookId">
         </commentary>
 
-        <section>
-              <h2>Comentarios</h2>
+        <section >
+                 
                   <div  v-for="(commentary, index) in commentariesList" :key="commentary.id">
                      
                       <section  v-show="!commentary.edit || commentary.edit===true">

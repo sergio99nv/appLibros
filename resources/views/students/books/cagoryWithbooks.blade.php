@@ -10,28 +10,28 @@
       
         <section class="cat-w-books-wrapper">
               
-
-               <div>
+                <div class="cat-w-books-wrapper__row">
+               
                         @if(isset($categoryName) && $categoryName!=="todos")
                                 <h1>
                                 {{$categoryName}}
                                 </h1>
                         @elseif(isset($isSearch) && $isSearch == "true")
                                 <h2>
-                                     Resultados de busqueda   
+                                Resultados de busqueda   
                                 </h2>
 
                         @endif
-               </div>
-               <div>
-                   <h4>
-                        {{
-                           count($books)     
-                        }}   
-                         resultados
-                   </h4>     
+              
+                
+                        <h4>
+                                {{
+                                count($books)     
+                                }}   
+                                resultados
+                        </h4>     
 
-               </div>
+                </div>
                 
 
                 <!-- imprimmir libros -->

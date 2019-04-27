@@ -18,8 +18,8 @@
     <body>
 
     <!-- nav -->
-      <div class="navbar-fixed elevation-2  white">
-        <nav class="nav-main">
+      <div class="navbar-fixed   ">
+        <nav class="nav-main white elevation-2">
 
             <div class="nav-main-wrapper">
                 <section class="nav-main-col">
@@ -30,7 +30,7 @@
                 </section>
 
                 @if(isset( $categories))
-                <section class="nav-main-form" id="nav-main-form">
+                <section class="nav-main-form " id="nav-main-form">
                     @component('students/components/searchForm', ["categories" => $categories,
                                                             "actionUrl" => "/books/search"])
 

@@ -1,28 +1,63 @@
-<style>
+<style scoped>
 
+
+.store{
+   max-width: 800px;
+   margin: 40px  auto 0 auto;
+}
+
+.sc-confirm-password{
+   display: flex;
+}
+
+
+ .row{
+       padding-left: 16px;
+   }
+
+@media only screen and (min-width: 600px) {
+  .store-form{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 15px 20px;
+   }
+
+   .row{
+       margin-bottom: 20px;
+       padding-left: 0;
+
+   }
+}
+</style>
+<style>
+   body {
+      background-color: var(--main-content-bg);
+   }
 </style>
 
 <template>
    <div class="store">
+
+         <div class="row">
+             <h1> Registro</h1>
+         </div>
         <div class="v-card v-sheet theme--light">
           
          <!-- titulo del formulario -->
-          <div class="v-card__title headline">
-             <slot name="title-main"></slot>
-          </div>
-
+         
             <!-- mostar un error  -->
            <div class="error-server  red--text" v-if="errorForm.value">
                   {{  errorForm.msg}}
             </div>
          
            <!--  campos del formulario -->
-          <section class="v-card__text store-form" v-show="!sendingFormData">
+       <form action=""   @submit.prevent="dataFormHandler()" >
+             <section class="v-card__text store-form" v-show="!sendingFormData">
               
               <div class=" store-form__item"  v-for="(item, index) in fieldForm"    :key="index">
                  <!-- si es input text -->
                   <v-text-field
-                        :type="item.type"
+                        :type="form[item.field].type"
                         is="v-text-field" 
                         :error="form[item.field].error"
                         :error-messages="formSended && form[item.field].serverErrorMsg.length ? [form[item.field].serverErrorMsg] : ''"
@@ -32,13 +67,32 @@
                         :label="item.label"
                         >
                   </v-text-field>
+        
  
-
-                 
-
               </div>
-        </section> 
+
+                <div class="sc-confirm-password">
+                     <v-text-field
+                           :type="confirmPassword.type"
+                           is="v-text-field" 
+                           v-on="confirmPassword.error ? { '~keyup': () =>  confirmPassword.error =''  } : {}"
+                           :error-messages="formSended && confirmPassword.error.length ? confirmPassword.error : ''"
+                           v-model="confirmPassword.value"
+                           label="confirmar contraseña"
+                           >
+                   </v-text-field>
+
+                   <v-btn title="mostar contraseña"  @click="showPass()"  flat icon color="black">
+                           <v-icon>remove_red_eye</v-icon>
+                     </v-btn>
+                </div>
+
+              
+               
+          </section> 
  
+
+        </form>
           
 
           <!-- accciones(btns) -->
@@ -91,6 +145,12 @@ export default {
                 form : {},
                 formSended : false,
                 gettingFormData : false,
+                confirmPassword : {
+                     value : "",
+                     type : "password",
+                     error : ""
+                },
+               
                 
               
             }
@@ -140,8 +200,17 @@ export default {
          },
 
 
+      comparePassInputs(){
+       
+         if(this.form["password"].value.trim() != this.confirmPassword.value.trim() ){
+            return false;
+         }
 
-         /**
+         return true;
+
+      },
+
+         /*
           * metodo para validar  y obtener los campos del formulario,  
           *  si todo esta bien obtenemos y enviamos los datos al server
           */
@@ -155,6 +224,15 @@ export default {
                 this.sendingFormData = false;
                return;
             } 
+ 
+            if(!this.comparePassInputs()){
+               this.sendingFormData = false;
+               this.confirmPassword.error = "Las contraseñas no coinciden";
+               
+               return;
+            }
+
+
     
             //obtenmos la data
             const formData = this.getDataForm(objectForm);
@@ -273,6 +351,18 @@ export default {
             this.errorForm.msg = msg
          },
 
+
+      showPass(){
+  
+         if(this.form["password"].type === 'password'){
+            this.form["password"].type = "text"
+            this.confirmPassword.type = "text"
+         }else{
+            this.form["password"].type= "password";
+             this.confirmPassword.type = "password"
+         }
+
+      }
 
     }
 }

@@ -8,69 +8,68 @@
 
 @section('content')
       
+
+ 
+  
         <section class="cat-w-books-wrapper">
-              
+         
+                 @if($type !== "search" && $categoryId!=null)
+                        <nav class="v-toolbar theme--light elevation-1 blue-grey lighten-5 nav-books-links" data-booted="true" style="margin-top: 0px; padding-right: 0px; padding-left: 0px; transform: translateY(0px);">
+                        <div 
+                        class="{{
+                                'v-toolbar__content   nav-books-links_content--'.$type      
+                            }}"
+                          style="height: 64px;">
+                         
+                                <div class="v-toolbar__items hidden-sm-and-down">
+                               
+                                <a href="{{'/books/'.$categoryId}}"  class="link-b-books v-btn v-btn--flat theme--light">
+                                          <div class="v-btn__content">Libros</div>
+                                </a>
+
+                                <a href="{{'/books/videos/'.$categoryId}}"  class="link-b-videos v-btn v-btn--flat theme--light">
+                                          <div class="v-btn__content">Videos</div>
+                                </a>
+                                
+                                
+                                </div>
+                        </div>
+                @endif
+        </nav>
+
+
+
                 <div class="cat-w-books-wrapper__row">
                
                         @if(isset($categoryName) && $categoryName!=="todos")
                                 <h1>
                                 {{$categoryName}}
                                 </h1>
-                        @elseif(isset($isSearch) && $isSearch == "true")
+                        @elseif ($type === "search")
                                 <h2>
                                 Resultados de busqueda   
                                 </h2>
 
                         @endif
               
+                        @if($type === "books" || $type === "search")
+                                <h4>
+                                        {{
+                                        count($books)     
+                                        }}   
+                                        resultados
+                                </h4>     
+                         @endif
                 
-                        <h4>
-                                {{
-                                count($books)     
-                                }}   
-                                resultados
-                        </h4>     
-
                 </div>
                 
-
+        
                 <!-- imprimmir libros -->
-                <section  class="cat-w-books-books">
-                        @foreach($books as $bookItem)
-                                <article>
-                                <a class="" href="{{ '/book/info/'.$bookItem->id }}">
-                                        
-                                        <div class="">
-                                                <div>               
-                                                        @if(strlen($bookItem->cover) > 0)
-                                                        <img 
-                                                        src=" {{
-                                                                        $fileUlrs['image'].'/'.$bookItem->cover
-                                                                }}" 
-                                                        alt="">
-                                                        @else
-                                                        <img 
-                                                        src="https://vinylfiction.com/wp-content/uploads/2018/09/norm.jpg"
-                                                        alt="">
-                                                        @endif
-                                                </div>
-                                                <div>
-                                                        {{
-                                                                $bookItem->name
-                                                        }}
-                                                </div>
-                                                <div>
-                                                        {{
-                                                                $bookItem->author
-                                                        }}
-                                                </div>
-                                                
-                                        </div>
-                                </a>
-                                </article>
-                        @endforeach
-                        
-                </section>
+                @if($type === "books" || $type === "search")
+                      @include('students.books.booksData') 
+                @else
+                   @include('students.books.videosData')                   
+                @endif 
 
 
         </section>

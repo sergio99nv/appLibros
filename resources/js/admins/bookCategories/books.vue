@@ -12,6 +12,10 @@
         padding: 1rem 0 3rem 0;
     }
 
+    .row{
+        margin-bottom: 20px;
+    }
+
 
 </style>
 
@@ -53,6 +57,10 @@
 <template>
     <div class="main-wrapper  main-wrapper--book">
         
+        <div class="row">
+            <h1>Libros</h1>
+        </div>
+
        <v-app>    
         <crud
              :init-data = "config.initData"

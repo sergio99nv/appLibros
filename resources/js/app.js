@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
      const showDeskMenu =  AppHelper.matchMediaMinWidth(showDeskMenuDeskMedia)
      const pathName = window.location.pathname;
       
-     if(showDeskMenu && pathName.startsWith("/books") === true){
+     if(showDeskMenu && (pathName.startsWith("/books") === true ||  pathName.startsWith("/admins/main") === true)){
          asideMainMenu.classList.add("asideMainMenu--open")
          mainAppContent.classList.add("mainAppContent--open")
      }
@@ -70,6 +70,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const navMainIconSearch  = document.querySelector("#nav-main-i-search");
     const navMainForm  = document.querySelector("#nav-main-form");
+    const navMainFormClose  = document.querySelector("#f-search-close");
+
     const navMainFormClass = "nav-main-form--full";
         
     navMainIconSearch.addEventListener("click", ()=>{
@@ -86,6 +88,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
        
     });
 
+
+    navMainFormClose.addEventListener("click", ()=>{
+        navMainForm.classList.remove(navMainFormClass)
+    });
+
+
+    const formSearch =  document.querySelector("#formSearch");
+    const formSearchInput = formSearch.querySelector("#formSearchInput")
+
+    formSearch.addEventListener("submit", function(event){
+      if(formSearchInput.value.trim().length<=0){
+          event.preventDefault();
+
+          formSearchInput.focus();
+      }
+      
+    })
 
 
     

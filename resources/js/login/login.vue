@@ -11,6 +11,11 @@
    }
 
 </style>
+<style>
+   body {
+      background-color: var(--main-content-bg);
+   }
+</style>
 <template>
    <div class="login">
         <div class="v-card v-sheet theme--light">

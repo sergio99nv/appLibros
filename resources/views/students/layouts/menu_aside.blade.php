@@ -11,7 +11,7 @@
                         <div class="main-menu-user-link__avatar">
                             <img  src="/img/userNoPicture.jpg"  alt="">
                         </div>
-                        <span>
+                        <span  class="truncate">
                             <strong>
                                 {{
                                 Session::get("userName")
@@ -49,7 +49,7 @@
                                 
                                 @foreach($categories as $category)
                                 <div class="main-menu-list-data__item">
-                                    <a href="{{ '/books/'.$category->id }}" class="main-menu-list-data__item__link"> 
+                                    <a href="{{ '/books/'.$category->id }}" class="truncate main-menu-list-data__item__link"> 
                                         {{
                                             $category->name
                                         }}

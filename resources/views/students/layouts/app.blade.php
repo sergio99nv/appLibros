@@ -26,17 +26,21 @@
                         @if(Session::has("userType") && Session::get("userType") === "student" ) 
                         <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
                     @endif
-                        <img class="main-nav__logo" src="/img/logo.png" alt="">
+                        <a href="/">
+                            <img class="main-nav__logo" src="/img/logo.png" alt="">
+                        </a>
                 </section>
 
                 @if(isset( $categories))
                 <section class="nav-main-form " id="nav-main-form">
-                    @component('students/components/searchForm', ["categories" => $categories,
-                                                            "actionUrl" => "/books/search"])
+                    @component('students/components/searchForm', [
+                                                                    "categoryId" => isset($categoryId ) && $type=="search" ? $categoryId : null,         
+                                                                    "categories" => $categories,
+                                                                    "actionUrl" => "/books/search"])
 
                     @endcomponent  
                 </section>
-                <i class="material-icons nav-main-i-search"  id="nav-main-i-search">
+                <i style="cursor:pointer" class="material-icons nav-main-i-search"  id="nav-main-i-search">
                                 search
                 </i>
                 @endif 

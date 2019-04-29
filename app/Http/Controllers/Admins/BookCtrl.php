@@ -32,7 +32,7 @@ class BookCtrl extends Controller
 
 
      /**
-     * guardar un nuevo libro
+     * 
      *
      * @param  Request  $request
      * @return Response

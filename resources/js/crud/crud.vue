@@ -26,6 +26,28 @@
     }
 </style>
 
+<style scoped>
+    .sc-crud-desc{
+        margin-bottom: 10px;
+    }
+
+    .sc-crud-desc > div{
+        margin-left: 5px;
+    }
+
+    @media screen and (min-width:600px){
+     .sc-crud-desc{
+         display: flex;
+         flex-direction: row;
+        justify-content: space-between;
+        align-items: center
+    }
+
+   
+   }
+</style>
+
+
 <template>
     <div>
         <div v-show="actionMsg.show == true" class="  msg-saved-ok green white--text">
@@ -44,12 +66,25 @@
              
         </div>
         
-        <div v-if="createData">
-             <button  @click="()=>  loadStoreComponent= !loadStoreComponent" type="button" class="v-btn theme--dark primary">
+
+        <div class="sc-crud-desc">
+                <div>
+                    <strong>
+                        {{
+                            dataCrud.length
+                        }}
+                        registros
+                    </strong>
+                </div>
+
+                <button   v-if="createData"  @click="()=>  loadStoreComponent= !loadStoreComponent" type="button" class="v-btn theme--dark primary">
                 <div class="v-btn__content">
                         {{createData.titles.btn || 'agregar'}}
                 </div>
-            </button>
+              </button>
+         </div>
+        <div v-if="createData">
+            
              <v-dialog
                  
                  v-if="loadStoreComponent"
@@ -119,7 +154,18 @@
                   
                  
                     <td v-for="(link, linkIndex) in linksAction" :key="'route' + linkIndex">
-                        <router-link :to="link.route + '/' + getFieldFromItem(itemData, link.param)">{{  link.name }}</router-link>
+                       
+                        <a v-if="link.isExternal" target="_blank" :href="getFieldFromItem(itemData, link.param)">
+                            {{
+                                link.name
+                            }}
+                            <i title="ver video" class="material-icons v-icon--right">
+                                 open_in_new
+                            </i>
+                        </a>
+                        <router-link
+                         v-else
+                         :to="link.route + '/' + getFieldFromItem(itemData, link.param)">{{  link.name }}</router-link>
                     </td>
                   
                     <td v-if="updateData">
@@ -130,7 +176,8 @@
                                 class="v-btn v-btn--flat v-btn--icon theme--light indigo--text">
                                 <div class="v-btn__content">
                                         <i aria-hidden="true" 
-                                        class="v-icon material-icons theme--light">edit
+                                        title="editar registro"
+                                        class="v-icon material-icons green--text">edit
                                         </i>
                                 </div>
                         </button>

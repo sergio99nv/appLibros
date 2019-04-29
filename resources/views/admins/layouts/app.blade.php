@@ -16,15 +16,32 @@
         @yield('cssFile')
     </head>
     <body>
-       <nav class="main-nav elevation-2">
+    
+    <style>
+        body{
+            background-color : var(--main-content-bg);
+        }
+            
+    </style>
+    <div class="navbar-fixed   ">
+        <nav class="nav-main white elevation-2">
 
-            <div class="main-nav__content">
-            @if(Session::has("userType") && Session::get("userType") === "admin" ) 
-                <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
-             @endif
-                 <img class="main-nav__logo" src="/img/logo.png" alt="">
+            <div class="nav-main-wrapper">
+                <section class="nav-main-col">
+                        @if(Session::has("userType") && Session::get("userType") === "admin" ) 
+                        <i aria-hidden="true" id="mainNavBtnMenu" class="material-icons main-nav__btnMenu">menu</i>   
+                    @endif
+                     <a href="/">
+                            <img class="main-nav__logo" src="/img/logo.png" alt="">
+                        </a>
+                </section>
+
+               
             </div>
-       </nav>
+
+            
+            </nav>
+      </div>
     
 
        @if(Session::has("userType") && Session::get("userType") === "admin" ) 
@@ -32,7 +49,7 @@
        @endif
 
 
-        <main>
+       <main id="main-app-content" class="main-app-content">
             @yield('content')
         </main>
 

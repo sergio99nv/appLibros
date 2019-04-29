@@ -7,6 +7,9 @@ use appLibros\Http\Controllers\Controller;
 
 use appLibros\Models\BookCategoryMdl;
 use appLibros\Models\BookMdl;
+use appLibros\Models\VideoMdl;
+
+
 use Illuminate\Support\Facades\Validator;
 use appLibros\Http\Controllers\HelperCtrl;
 
@@ -50,12 +53,52 @@ class BookCategoryCtrl extends Controller
         }
    
         $fileUlrs = self::getUrlBookCover();
+      
+      
         $dataView = array(
                         "categories"=>$categories,
                         "books"=>$books,
                         "fileUlrs" =>  $fileUlrs,
+                        "categoryId"=> $categoryId,
                         "categoryName" => $categoryIdName,
-                        "isSearch" => false
+                        "type" => "books"
+                    );
+
+
+        return view('students/books/cagoryWithbooks', $dataView);
+    
+    }
+
+
+
+
+    /**
+     * obtener los datos de una categoria
+     *
+     * @param  Int  $categoryId
+     * @return Response
+     */
+    public function getVideos($categoryId)  
+    {
+
+        $categories  =  BookCategoryMdl::all('bookCategoryId as id','name');
+     
+
+        $categoryIdName =  BookCategoryMdl::find($categoryId, ["name"])->name;
+
+      
+        $videos  = VideoMdl::where("bookCategoryId",  $categoryId)->get(["url"]);
+        
+     
+    
+      
+        $dataView = array(
+                        "categories"=>$categories,
+                        "videos"=>$videos,
+                        "categoryId"=> $categoryId,
+                        "categoryName" => $categoryIdName,
+ 
+                        "type" => "videos"
                     );
 
 
@@ -75,11 +118,13 @@ class BookCategoryCtrl extends Controller
     public function search(Request $request)
     {
         
+        
         $rules = [
             "bookName" => "required",
-            "categoryId" => "required|int|min:-1"  
+            "categoryId" => "nullable|int|min:-1"  
            ];
  
+
         $validation= Validator::make($request->all(),$rules);
         if($validation->fails()){
            // return redirect('books');
@@ -94,6 +139,8 @@ class BookCategoryCtrl extends Controller
         $bookName = $request->bookName;
         $categoryId = $request->categoryId;
 
+      
+
         $bookFields  = self::$bookFields;
 
         if($categoryId >=1){
@@ -107,6 +154,7 @@ class BookCategoryCtrl extends Controller
             $dataBook  = BookMdl::where("name", "LIKE", "{$bookName}%")
                                 ->orWhere("author", "LIKE", "{$bookName}%")
                                 ->get($bookFields);
+           
                
         }
 
@@ -121,7 +169,10 @@ class BookCategoryCtrl extends Controller
                                                         "categories"=>$categories,
                                                         "books"=>$dataBook,
                                                         "fileUlrs" =>  $fileUlrs,
-                                                        "isSearch" => true
+                                                      
+                                                        "categoryId"=> $categoryId,
+                                                         
+                                                        "type" => "search"
                                                         )
                                             );
     }

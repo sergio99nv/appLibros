@@ -116,7 +116,7 @@ class RegisterCtrl extends Controller
     
           
             return response()->json([
-                "redirecTo" =>  "sussess",
+                "redirecTo" =>  "register/success",
                 'error' =>  false
             ]);
 
@@ -132,8 +132,9 @@ class RegisterCtrl extends Controller
 
 
 
-    public function sussess(){
-       return view('students/sussess');
+    public function success(){
+       
+       return view('students/success');
     }
 
 

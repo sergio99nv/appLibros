@@ -7,23 +7,21 @@
          }
          
 
-       .theme--light.application{
-           background-color: transparent;
-       }
-
-  
+       
+    
+        .row{
+            margin-bottom: 20px;
+        }
         
-      
-</style>
-
-<style>
-
-  
 </style>
 
 
 <template>
     <div class="main-wrapper main-wrapper--cat">
+
+        <div class="row">
+             <h1>Usuarios administradores</h1>
+        </div>
        <v-app>    
         <crud
             :print-view-data = "config.printViewData"

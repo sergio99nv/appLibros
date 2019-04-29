@@ -1,7 +1,29 @@
 <style scoped>
+    .row{
+      margin-bottom : 40px!important;
+    }
 
     .wrapper-commentaries{
         margin-top: 1rem;
+    }
+    .user-commnetary{
+        display: grid;
+        grid-template-columns: 50px 1fr 50px;
+        column-gap: 9px;
+    }
+
+    .user-commnetary{
+        margin-bottom: 30px;
+    }
+
+    .commentary-editing{
+        margin: 40px 0;
+
+    }
+
+    .user-commnetary-img__picture{
+        border-radius: 50px;
+        width: 40px;
     }
 
     .wrapper-commentaries__count{
@@ -24,43 +46,87 @@
             {{
                 commentariesList.length
             }}
-            comentarios  
+            
+            <span> 
+                comentario {{
+                                 commentariesList.length > 1 ? 's' : ''
+                             }}
+             </span> 
+           
+              
         </div>
-        <commentary @newCommentaryEvent="newCommentaryEventHandler" 
-            :book-id="bookId">
-        </commentary>
+        
+
+         <section class="row user-commnetary">
+                       <div class="user-commnetary-img">
+                           <img class="user-commnetary-img__picture" src=/img/userNoPicture.jpg alt="">
+                       </div>
+                       <commentary @newCommentaryEvent="newCommentaryEventHandler" 
+                          :book-id="bookId">
+                      </commentary>
+                       
+        </section>
+
+
+
 
         <section >
                  
                   <div  v-for="(commentary, index) in commentariesList" :key="commentary.id">
-                     
-                      <section  v-show="!commentary.edit || commentary.edit===true">
-                        {{
-                              commentary.text
-                        }}
+                      
+                      <section
+                         v-if="!commentary.editing"   
+                       class="user-commnetary"
+                        v-show="!commentary.edit || commentary.edit===true">
+                      
+                      
+                       <div>
+                           <img class="user-commnetary-img__picture" src=/img/userNoPicture.jpg alt="">
+                       </div>
+                       <div>
+                           <div>
+                               <strong>
+                                   {{commentary.fullName}}
+                               </strong>
+                           </div>
+                            <div>
+                                 {{
+                                commentary.text
+                                }}
+                            </div>
+                       </div>
+                       
+                           
+                        
+                        <v-btn title="Editar"  v-if="commentary.allowEdit"
+                                    @click="editCommentary(commentary)"  flat icon color="grey darken-1">
+                            <v-icon>edit</v-icon>
+                        </v-btn>
                       </section>
 
-                     <button
-                       v-if="commentary.allowEdit"
-                        @click="editCommentary(commentary)"
-                        type="button"
-                        class="v-btn red white--text">
-                            <div class="v-btn__content">
-                                   editar
-                            </div>
-                     </button>
+                    
 
+                 
+         
+                    
 
-                      <commentary 
-                       
-                      v-if="commentary.allowEdit && commentary.edit && commentary.edit === true"
+                     <section  class="user-commnetary commentary-editing" v-if="commentary.allowEdit && commentary.editing && commentary.editing === true">
+                       <div class="user-commnetary-img">
+                           <img class="user-commnetary-img__picture" src=/img/userNoPicture.jpg alt="">
+                       </div>
+                       <commentary 
+
                          @updateCommentaryEvent="updatecommentaryEventHandler" 
+                         @hideCommnetaryEvent ="hideCommnetaryEventHandler"
                          :is-update="true"
                          :user-commentary-prop="commentary.text"
                          :update-index="index"
                          :update-id="commentary.id"
                         :book-id="bookId">
-                    </commentary>
+                            </commentary>
+                       
+                 </section>  
+                     
                 </div>
         </section>
     </div>
@@ -165,14 +231,21 @@ export default {
             this.commentariesList[itemIndex].text = text;
                 
              this.commentariesList[itemIndex].edit = false;
+             this.commentariesList[itemIndex].editing = false;
 
         },
 
 
+        hideCommnetaryEventHandler(itemIndex){
+            this.commentariesList[itemIndex].editing = false;
+             
+        },
+
 
         editCommentary(commentary){
-            this.$set(commentary, "edit", true)
+            this.$set(commentary, "editing", true)
         }
+
 
     }
 

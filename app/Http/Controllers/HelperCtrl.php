@@ -3,6 +3,8 @@
 namespace appLibros\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
+
 
 class HelperCtrl extends Controller
 {
@@ -29,5 +31,30 @@ class HelperCtrl extends Controller
   {
      return self::$fileConfig;
   }
+
+
+
+
+  public function start()
+  {
+
+    if(Session::has("userType")){  
+      
+      if(Session::get("userType") == "admin"){  
+          return redirect("/admins/main"); 
+      }else if(Session::get("userType") == "student"){  
+        return redirect("/books"); 
+      
+      } 
+    }
+
+
+
+  
+    return view('welcome');
+
+  }
+
+  
 
 }

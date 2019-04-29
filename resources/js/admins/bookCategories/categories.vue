@@ -11,6 +11,10 @@
            background-color: transparent;
        }
 
+       .row{
+           margin-bottom: 20px;
+       }
+
   
         
       
@@ -18,6 +22,9 @@
 
 <style>
 
+  .theme--light.application{
+        background-color: transparent!important;
+    }
   @media screen and (min-width:600px){
     .main-wrapper--cat  .v-dialog{
         max-width: 600px;
@@ -28,6 +35,11 @@
 
 <template>
     <div class="main-wrapper main-wrapper--cat">
+
+        <div class="row">
+            <h1>Categorias</h1>
+        </div>
+
        <v-app>    
         <crud
 

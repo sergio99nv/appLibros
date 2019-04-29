@@ -11,10 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
+ 
+
+Route::get('/',  'HelperCtrl@start');
 
 Route::get('/login',  'Students\LoginCtrl@index');
 Route::post('/login/validateLogin',  'Students\LoginCtrl@validateLogin');
@@ -23,7 +26,7 @@ Route::get('/login/closeSession',  'Students\LoginCtrl@closeSession');
 Route::group(['prefix'=>'register'], function(){
     Route::get('/',  'Students\RegisterCtrl@index');
     Route::post('/store',  'Students\RegisterCtrl@store');
-    Route::get('/sussess',  'Students\RegisterCtrl@sussess');
+    Route::get('/success',  'Students\RegisterCtrl@success');
 
     Route::post('/checkField',  'Students\RegisterCtrl@checkField');
     
@@ -39,8 +42,10 @@ Route::group(['prefix'=>'register'], function(){
     // Route::get('/categories/list',  'Students\AppCtrl@index');
 
 
-    Route::get('/books',  'Students\BookCategoryCtrl@getBooks');
+    Route::get('/books/',  'Students\BookCategoryCtrl@getBooks');
     Route::get('/books/{category?}',  'Students\BookCategoryCtrl@getBooks');
+
+    Route::get('/books/videos/{category}',  'Students\BookCategoryCtrl@getVideos');
 
     Route::post('/books/search',  'Students\BookCategoryCtrl@search');
 
@@ -109,6 +114,16 @@ Route::group(['prefix'=>'admins'], function(){
                 Route::post('/update',  'Admins\BookCtrl@update');
                 Route::post('/storeCover',  'Admins\BookCtrl@storeCover');
                 Route::post('/storeFile',  'Admins\BookCtrl@storeFile');
+            });
+
+
+
+            Route::group(['prefix'=>'/videos'], function(){
+                              
+                Route::post('/getAll',  'Admins\VideoCtrl@getAll');
+                Route::post('/store',  'Admins\VideoCtrl@store');
+                Route::post('/update',  'Admins\VideoCtrl@update');
+               
             });
          });
     });//fin middleware

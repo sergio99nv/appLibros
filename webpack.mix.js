@@ -78,3 +78,9 @@ mix.js('resources/js/admins/bookCategories/app.js',
     
     mix.styles('resources/css/students/book-info.css',
     'public/css/students/book-info.css')
+
+    //registro
+
+       
+    mix.styles('resources/css/students/landing.css',
+    'public/css/students/landing.css')

@@ -8,7 +8,7 @@ use appLibros\Http\Controllers\Controller;
 use appLibros\Models\CommnetaryMdl; 
 use Illuminate\Support\Facades\Validator;
 use Session;
-
+use DB;
 
 
 class CommnetaryCtrl extends Controller
@@ -36,14 +36,16 @@ class CommnetaryCtrl extends Controller
            ]);
         }
 
-
-        $commentaries  = CommnetaryMdl::where("bookId", $request->bookId)
-                        ->get([
-                                "commentaryId as id",
-                                "text",
-                                "bookId",
-                                "userId"
-                             ]);
+        $bookId = $request->bookId;
+        $commentaries  = CommnetaryMdl::select("commentaryId as id",
+                                                "text",
+                                                "bookId",
+                                                "userId",
+                                                 DB::raw("CONCAT(firstName, ' ' ,lastName) as fullName")
+                                              )
+                        ->join('students', 'students.studentId', '=', 'commentaries.userId')
+                        ->where("bookId",  $bookId)
+                        ->get();
 
         //$data = self::addFilePath($dataBook);
         $userId = Session::get("userId");
@@ -100,8 +102,8 @@ class CommnetaryCtrl extends Controller
            $commnetaryMdl->save();
  
             $dataEmit = array(
-              
-               "id" => $commnetaryMdl->commentaryId
+                "fullName" =>  Session::get("userName"),
+                "id" => $commnetaryMdl->commentaryId
             );
 
 

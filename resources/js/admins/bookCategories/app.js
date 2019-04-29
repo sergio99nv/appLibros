@@ -33,6 +33,12 @@ const routes = [
       path: '/libros/:bookCategoryId', 
       component:  Vue.component('books', require('./books').default),
       props:true 
+    },
+
+    {
+      path: '/videos/:bookCategoryId', 
+      component:  Vue.component('videos', require('./videos').default),
+      props:true 
     }
     
   ]

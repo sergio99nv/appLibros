@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var showDeskMenu = _appHelper__WEBPACK_IMPORTED_MODULE_0__["default"].matchMediaMinWidth(showDeskMenuDeskMedia);
   var pathName = window.location.pathname;
 
-  if (showDeskMenu && pathName.startsWith("/books") === true) {
+  if (showDeskMenu && (pathName.startsWith("/books") === true || pathName.startsWith("/admins/main") === true)) {
     asideMainMenu.classList.add("asideMainMenu--open");
     mainAppContent.classList.add("mainAppContent--open");
   }
@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   var navMainIconSearch = document.querySelector("#nav-main-i-search");
   var navMainForm = document.querySelector("#nav-main-form");
+  var navMainFormClose = document.querySelector("#f-search-close");
   var navMainFormClass = "nav-main-form--full";
   navMainIconSearch.addEventListener("click", function () {
     var hasCssClass = navMainForm.classList.contains(navMainFormClass);
@@ -152,6 +153,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
       navMainForm.classList.remove(navMainFormClass);
     } else {
       navMainForm.classList.add(navMainFormClass);
+    }
+  });
+  navMainFormClose.addEventListener("click", function () {
+    navMainForm.classList.remove(navMainFormClass);
+  });
+  var formSearch = document.querySelector("#formSearch");
+  var formSearchInput = formSearch.querySelector("#formSearchInput");
+  formSearch.addEventListener("submit", function (event) {
+    if (formSearchInput.value.trim().length <= 0) {
+      event.preventDefault();
+      formSearchInput.focus();
     }
   });
 });
@@ -251,7 +263,7 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/boxhn/apps/appLibros/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/sergio99nv/appLibros/resources/js/app.js */"./resources/js/app.js");
 
 
 /***/ })

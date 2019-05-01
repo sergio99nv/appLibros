@@ -26,7 +26,7 @@
                     <a class="main-menu-item-link" href="/books">
                         
                         <i class="material-icons  main-menu-item-link__i">
-                            book
+                              home
                         </i>
 
                         <span>Inicio</span>

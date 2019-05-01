@@ -11,8 +11,11 @@
 
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        <link href="/css/vuetify.min.css" rel="stylesheet">
+        
         <link href="/css/app_main.css" rel="stylesheet">
+       
+
         @yield('cssFile')
     </head>
     <body>
@@ -57,7 +60,13 @@
        
         @if(Session::has("userType") && Session::get("userType") === "admin" ) 
               <script src="/js/app.js"></script>
+
+            
        @endif
+
+       
+
+         
        @yield('scripts')
     </body>
 </html>

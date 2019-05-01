@@ -67,7 +67,7 @@ class RegisterCtrl extends Controller
         $rules = [
                     "firstName" => "required|max:10000",
                     "lastName" => "required|max:10000",
-                    "phoneNumber" => "required",
+                    "phoneNumber" => "required|numeric",
                     "email" => "required|email",
                     "password" => "required"
                 ];

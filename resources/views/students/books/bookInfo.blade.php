@@ -19,23 +19,25 @@
                                 alt="">
                             @else
                                 <img 
-                                src="https://vinylfiction.com/wp-content/uploads/2018/09/norm.jpg"
+                                src="/img/no_cover.png"
                                 alt="">
                             @endif
                     </div>  
                     <div class="book-info-desc">
-                           <h2>
+                           <h2 class="book-info-desc__title">
                                {{
                                    $bookInfo->name
                                }}
                            </h2>
-                           <h3>
+                           <h4 class="book-info-desc__author blue-grey--text text--darken-4">
+                               <span>Autor: </span>
                                {{
                                    $bookInfo->author
                                }}
-                           </h3>
+                           </h4>
 
-                           <div>
+                           <div class="book-info-desc__desc">
+                            
                              <p>    
                                   {{
                                         $bookInfo->description
@@ -86,6 +88,10 @@
 
 @section('scripts')
 
-<script src="/js/students/commentary/app.js"></script>   
+    <script  src="/js/vue/vue.min.js"></script>  
+    <script src="/js/vuetify/vuetify.js"></script>
+     
    
+
+    <script src="{{ mix('/js/students/commentary/app.js') }}"></script> 
 @endsection

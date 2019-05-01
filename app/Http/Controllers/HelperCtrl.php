@@ -8,21 +8,24 @@ use Session;
 
 class HelperCtrl extends Controller
 {
-    private static $fileConfig = array(
+    
+      private static $fileConfig = array(
         "tempFileName" => "TEMP_FILE",
         "file" => array(
                 "maxSize" => 8192,
                 "extensions" => ["pdf"],
-                "urlPath" =>"/storage/adminBooks",
-                "folder" => "/public/adminBooks",
+                "urlPath" =>"/bookFiles/adminBooks",
+                "folder" => "adminBooks"
+                 
                  
         ),
 
         "image" => array(
              "maxSize" => 8192,
              "extensions" => ["jpg", "jpeg", "png"],
-             "urlPath" =>"/storage/bookCovers",
-             "folder" => "/public/bookCovers"
+             "urlPath" =>"/bookFiles/bookCovers",
+             "folder" => "bookCovers"
+               
        )
   );
 

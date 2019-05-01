@@ -21,7 +21,7 @@
                             }}"
                           style="height: 64px;">
                          
-                                <div class="v-toolbar__items hidden-sm-and-down">
+                                <div class="v-toolbar__items ">
                                
                                 <a href="{{'/books/'.$categoryId}}"  class="link-b-books v-btn v-btn--flat theme--light">
                                           <div class="v-btn__content">Libros</div>

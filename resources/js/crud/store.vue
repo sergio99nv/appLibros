@@ -7,6 +7,12 @@
    .progress__load, .progress__title{
       margin-bottom: 20px;
    }
+   
+   .store-title{
+      justify-content: space-between;
+      align-items: center;
+   }
+   
 
    
  </style>
@@ -15,8 +21,12 @@
         <div class="v-card v-sheet theme--light">
           
          <!-- titulo del formulario -->
-          <div class="v-card__title headline">
+          <div class="v-card__title headline store-title" v-show="!sendingFormData">
              <slot name="title-main"></slot>
+
+             
+              <slot name="close-modal-x" ></slot>
+              
           </div>
 
             <!-- mostar un error  -->
@@ -57,11 +67,12 @@
                   </v-textarea>
                   
                    <!-- si es tipo file -->
-                
+              
                   <uploadFile  v-else-if="item.type=='file' || item.type=='image'"
                               :show-img-miniature="item.type=='image' ? true : false"
                               :type="item.type"  
                               :label="item.label"
+                               :required="form[item.field].rules.required"
                               v-model="form[item.field].value"
                               :extensions="item.fileConfig.extensions"
                                v-on="form[item.field].error ? { '~inputChange': () => inputHideError(item.field) } : {}"

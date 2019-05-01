@@ -11,7 +11,13 @@
 
 
 @section('scripts')
-    <script src="/js/admins/login/app.js"></script>   
+
+    <script  src="/js/vue/vue.min.js"></script>  
+    <script src="/js/vuetify/vuetify.js"></script>
+
+
+    <script src="{{ mix('/js/admins/login/app.js') }}"></script>
+  
 @endsection
  
 

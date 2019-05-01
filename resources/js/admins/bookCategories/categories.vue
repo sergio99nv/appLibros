@@ -51,7 +51,7 @@
              :links-action= "config.linksAction"> 
                 <thead   slot="fieldNames">
                     <tr>
-                        <th class="text-sm-left">Categoría</th>
+                        <th style="min-width:110px" class="text-sm-left">Categoría</th>
                         <th class="text-sm-left">Ver libros</th>
                         <th class="text-sm-left">Ver Videos</th>
                         <th class="text-sm-left">Acciones</th>

@@ -4,7 +4,7 @@
 
 @section('content')
       <div id="app">
-         <router-view></router-view>
+      <keep-alive  :exclude="['books', 'videos']" > <router-view></router-view> </keep-alive> 
     </div>
 @endsection
 
@@ -14,6 +14,12 @@
         window.AppBookHelper = {};
         window.AppBookHelper.fileConfig =  <?php echo json_encode($fileConfig, JSON_HEX_TAG); ?>; 
     </script>
-    <script src="/js/admins/bookCategories/app.js"></script>
+
+    <script  src="/js/vue/vue.min.js"></script>  
+    <script src="/js/vuetify/vuetify.js"></script>
+   
+
+    <script src="{{ mix('/js/admins/bookCategories/app.js') }}"></script>
+
 @endsection
  

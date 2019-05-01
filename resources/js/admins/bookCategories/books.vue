@@ -20,11 +20,21 @@
 </style>
 
 <style>
+
+    .update-form__item,
+     .store-form__item{
+         margin-bottom: 10px;
+     }
      
      @media screen and (min-width:920px){
 
+          .update-form__item,
+          .store-form__item{
+             margin-bottom: 0;
+         }
+
         .main-wrapper--book  .v-dialog{
-                max-width: 920px;
+                max-width: 950px;
          }
 
 
@@ -71,8 +81,8 @@
             > 
                 <thead   slot="fieldNames">
                     <tr>
-                        <th class="text-sm-left">Libro</th>
-                        <th class="text-sm-left">Autor</th>
+                        <th style="min-width:110px" class="text-sm-left">Libro</th>
+                        <th style="min-width:110px" class="text-sm-left">Autor</th>
                          <th class="text-sm-left">Acciones</th>
                     </tr>
                 </thead>
@@ -112,7 +122,7 @@ import crud from '@pathRoot/crud/crud.vue'
 
              const fieldsStore = [
                    {field: "file",
-                        label:"libro", 
+                        label:"Libro", 
                         type:"file" ,
                         fileConfig:{
                             maxSize : configFileFile["maxSize"],
@@ -121,10 +131,10 @@ import crud from '@pathRoot/crud/crud.vue'
                             urlUpload : prefixUrl + "/storeFile"
                             
                         },
-                        rules: {required: value => !!value || 'seleccione el archivo'}
+                         rules: {required: true}
                     },
                     {field: "cover",
-                        label:"miniatura", 
+                        label:"Portada", 
                         type:"image" ,
                         fileConfig:{
                             maxSize : configFileImg["maxSize"],
@@ -147,9 +157,9 @@ import crud from '@pathRoot/crud/crud.vue'
                         rules: {required: value => !!value || 'ingrese el  autor'}
                     },
                     {field: "description",
-                        label:"Descripción", 
+                        label:"Descripción (Opcional)", 
                         type:"textArea" ,
-                        rules: {required: value => !!value || 'ingrese la descripción'  }
+                        rules: {required: false  }
                     },
                       
                 ];

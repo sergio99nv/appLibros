@@ -1,25 +1,60 @@
 <style scoped>
    .login{
-      max-width: 500px;
+      width: 95%;
       margin-left: auto;
-      margin-right:  auto;
-      margin-top : 20px;
+      margin-right: auto;
+      margin-top: 25px;
+      max-width: 500px;
    }
 
    .error-server{
       padding: 0 12px;
    }
 
+   .div-opacity{
+      position: relative;
+   }
+
+   .div-opacity::after{
+      position: absolute;
+      content: "";
+      background-color: white;
+      opacity: 0.4;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+   }
+
+  
+    
+   
+
 </style>
 <style>
    body {
       background-color: var(--main-content-bg);
    }
+
+   .application--wrap{
+          min-height: auto!important;
+   }
+
+  
 </style>
 <template>
-   <div class="login">
-        <div class="v-card v-sheet theme--light">
-          
+   <v-app>    
+      <div class="login"  >
+         <div v-if="passwordCorrect">
+              <h1> cargando ...</h1>
+         </div>
+<!-- :class="{!sendingFormData : 'div-opacity'}" -->
+        <div class="v-card  v-sheet theme--light  "
+                  v-show="!passwordCorrect"
+                :class="{ 'div-opacity' : sendingFormData}" >
+
+
+           <v-progress-linear v-if="sendingFormData" :indeterminate="true"></v-progress-linear>   
          <!-- titulo del formulario -->
           <div class="v-card__title headline">
                 {{
@@ -35,8 +70,8 @@
          <form action=""   @submit.prevent="dataFormHandler()" >
 
                      <!--  campos del formulario -->
-               <section class="v-card__text store-form" v-show="!sendingFormData">
-                  
+               <section class="v-card__text store-form" >
+                   
                   <div class=" store-form__item"  v-for="(item, index) in fieldForm"    :key="index">
                      <!-- si es input text -->
                         <v-text-field
@@ -49,30 +84,34 @@
                               v-model="form[item.field].value"
                               :label="item.label"
                               >
-                        </v-text-field>
-                  </div>
-            </section> 
-      
+                              </v-text-field>
+                        </div>
+                  </section> 
+            
 
-            <!-- accciones(btns) -->
-            <div class="v-card__actions">
-                  
-                  <div class="spacer"></div>
-   
-      
-                  <button :disabled="sendingFormData"
-                
-                  type="submit"
-                  class="v-btn theme--dark primary">
-                     <div class="v-btn__content">
-                           guardar
-                     </div>
-               </button>
-            </div>
+                  <!-- accciones(btns) -->
+                  <div class="v-card__actions">
+                        
+                        <div class="spacer"></div>
+         
+            
+                        <button :disabled="sendingFormData"
+                     
+                        type="submit"
+                        class="v-btn" :class="sendingFormData ? 'grey lighten-2' : 'blue white--text'  ">
+                              
+                           <div class="v-btn__content">
+                              
+                                 <span v-if="!sendingFormData">ingresar</span>
+                                 <span v-else>enviando</span>
+                           </div>
+                     </button>
+                  </div>
          
          </form>
       </div>
    </div>
+  </v-app>
 </template>
 <script>
 
@@ -105,6 +144,7 @@ export default {
                 form : {},
                 formSended : false,
                 gettingFormData : false,
+                passwordCorrect : false
                 
               
             }
@@ -218,7 +258,8 @@ export default {
 
                   const responseData = response.data;
                   if(responseData.error===false){
-                      window.location = responseData.redirectTo
+                     this.passwordCorrect = true;
+                     window.location.href = responseData.redirectTo
                   }else{
                      if(responseData.invalidData){
                         this.setErrorForm(true, responseData.msg);

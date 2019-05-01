@@ -42,14 +42,24 @@
 <template>
     <div class="wrapper-commentaries">
 
-         <div class="wrapper-commentaries__count">
+        <div   class=" sendingData-circle text-xs-center" v-if="loadingData">
+             <v-progress-circular
+                indeterminate
+                color="primary"
+                ></v-progress-circular>
+                <div>
+                    cargando comentarios ...
+                </div>
+         </div>
+
+         <div class="wrapper-commentaries__count" v-if="!loadingData">
             {{
                 commentariesList.length
             }}
             
             <span> 
-                comentario {{
-                                 commentariesList.length > 1 ? 's' : ''
+                comentario{{
+                                 commentariesList.length === 0 || commentariesList.length  > 1 ? 's' : ''
                              }}
              </span> 
            
@@ -57,7 +67,7 @@
         </div>
         
 
-         <section class="row user-commnetary">
+         <section class="row user-commnetary" v-if="!loadingData">
                        <div class="user-commnetary-img">
                            <img class="user-commnetary-img__picture" src=/img/userNoPicture.jpg alt="">
                        </div>
@@ -66,9 +76,6 @@
                       </commentary>
                        
         </section>
-
-
-
 
         <section >
                  
@@ -104,11 +111,7 @@
                         </v-btn>
                       </section>
 
-                    
-
-                 
-         
-                    
+ 
 
                      <section  class="user-commnetary commentary-editing" v-if="commentary.allowEdit && commentary.editing && commentary.editing === true">
                        <div class="user-commnetary-img">

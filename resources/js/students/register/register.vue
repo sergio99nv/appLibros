@@ -1,8 +1,8 @@
 <style scoped>
-
-
+ 
 .store{
    max-width: 800px;
+   width: 95%;
    margin: 40px  auto 0 auto;
 }
 
@@ -14,7 +14,32 @@
  .row{
        padding-left: 16px;
    }
+  .error-server {
+     padding: 10px 17px;
+  }
 
+
+
+.div-opacity{
+   position: relative;
+}
+
+.div-opacity::after{
+   position: absolute;
+   content: "";
+   background-color: white;
+   opacity: 0.4;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+}
+
+.v-progress-linear{
+   margin-top: 0;
+}
+
+  
 @media only screen and (min-width: 600px) {
   .store-form{
       display: grid;
@@ -33,16 +58,33 @@
    body {
       background-color: var(--main-content-bg);
    }
+
+   .application--wrap{
+    min-height: auto!important;
+    }
+
 </style>
 
 <template>
    <div class="store">
+      <v-app>
 
-         <div class="row">
-             <h1> Registro</h1>
+
+        <div v-if="passwordCorrect">
+              <h1> cargando ...</h1>
          </div>
-        <div class="v-card v-sheet theme--light">
-          
+
+
+        
+        <div class="v-card  v-sheet theme--light  "
+                  v-show="!passwordCorrect"
+                :class="{ 'div-opacity' : sendingFormData}" >
+
+            <v-progress-linear  v-if="sendingFormData" :indeterminate="true"></v-progress-linear> 
+
+             <div class="v-card__title headline">
+             <h4> Registro</h4>
+            </div>
          <!-- titulo del formulario -->
          
             <!-- mostar un error  -->
@@ -52,7 +94,7 @@
          
            <!--  campos del formulario -->
        <form action=""   @submit.prevent="dataFormHandler()" >
-             <section class="v-card__text store-form" v-show="!sendingFormData">
+             <section class="v-card__text store-form"  >
               
               <div class=" store-form__item"  v-for="(item, index) in fieldForm"    :key="index">
                  <!-- si es input text -->
@@ -82,36 +124,35 @@
                            >
                    </v-text-field>
 
-                   <v-btn title="mostar contraseña"  @click="showPass()"  flat icon color="black">
-                           <v-icon>remove_red_eye</v-icon>
+                   <v-btn  @click="showPass()"  flat icon color="black">
+                           <v-icon   title="ocultar contraseña" class="blue-grey--text text--darken-3" v-if="!isShowingPass">visibility_off</v-icon>
+                           <v-icon  title="mostar contraseña"  class="blue-grey--text text--darken-3" v-else >visibility</v-icon>
                      </v-btn>
                 </div>
 
               
                
           </section> 
- 
+  
+            <!-- accciones(btns) -->
+            <div class="v-card__actions">
+                     <div class="spacer"></div>
 
-        </form>
-          
-
-          <!-- accciones(btns) -->
-         <div class="v-card__actions">
-               
-               <div class="spacer"></div>
- 
-         
-               <button :disabled="sendingFormData"
-               @click="dataFormHandler()" 
-               type="button"
-               class="v-btn theme--dark primary">
-                  <div class="v-btn__content">
-                        guardar
-                  </div>
-            </button>
-         </div>
-         
+                     <button :disabled="sendingFormData"
+                        type="submit"
+                        class="v-btn" 
+                        :class="sendingFormData ? 'grey lighten-2' : 'blue white--text'  ">
+                           <div class="v-btn__content">
+                              
+                                 <span v-if="!sendingFormData">ingresar</span>
+                                 <span v-else>enviando</span>
+                           </div>
+                     </button>
+               </div>
+          </form>
       </div>
+         
+      </v-app>
    </div>
 </template>
 <script>
@@ -151,6 +192,7 @@ export default {
                      error : ""
                 },
                
+               passwordCorrect : false
                 
               
             }
@@ -282,6 +324,7 @@ export default {
 
                   const responseData = response.data;
                   if(responseData.error===false){
+                     this.passwordCorrect = true;
                      window.location = responseData.redirecTo
                   }else{
                       if(responseData.dataError){
@@ -364,6 +407,12 @@ export default {
 
       }
 
+    },
+    computed:{
+       isShowingPass(){
+          return this.form["password"].type == "password"
+                      &&  this.confirmPassword.type == "password"
+       }
     }
 }
 </script>

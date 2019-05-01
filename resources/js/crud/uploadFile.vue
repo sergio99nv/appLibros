@@ -1,5 +1,10 @@
 <style scoped>
 
+        .label-file{
+               margin-bottom: 7px;
+            color: #716b6b;
+            text-transform: capitalize;
+        }
         .file-component{
         
            padding: 1rem 1rem;
@@ -18,14 +23,40 @@
             display: block;
         }
         
-    
+        .sc-btn-upload {
+            flex-direction: column;
+             align-items: flex-start;
+        }
+
+          @media screen and (min-width:1024px){
+             
+            .sc-btn-upload {
+                flex-direction: row;
+                
+            }
+
+
+          }
 
 </style>
 <template>
+    <div>
+      
+   
+    
+    <div class="label-file">
+        <label for=""> subir  {{label}} 
+                 <span for="" v-if="!required">
+                           (opcional)
+                    </span>    
+         </label>
+    </div>
+        <!--  -->
     <div class="file-component">
 
        <input  hidden ref="inputFile" :accept="getFileExtensions()" type="file" @change="inputChange($event)" >
        
+    
         <div class="file-wrapper">
 
             <!-- si se esta subiendo el archivo -->
@@ -47,6 +78,7 @@
                                 cancelar
                             </span>         
                       </button>
+                       
 
                   </div>
 
@@ -57,18 +89,22 @@
              <!--seccion del boton subir -->
             <section class="sc-btn-upload layout row"   v-show="!sendingData">
                <!-- boton subir -->
-                <button
-                :disabled="sendingData"                    
-                     @click="$refs.inputFile.click()"
-                   class="v-btn blue-grey darken-2">
-                   <span class="white--text v-btn__content">
-                        subir  {{label}}  
+                <div>
+                        <button
+                    :disabled="sendingData"                    
+                        @click="$refs.inputFile.click()"
+                    class="v-btn blue-grey darken-2">
+                    <span class="white--text v-btn__content">
+                            subir  {{label}} 
 
-                         <i 
-                            class="v-icon v-icon--right material-icons theme--light">cloud_upload
-                        </i>
-                   </span>          
-                 </button>
+                            <i 
+                                class="v-icon v-icon--right material-icons theme--light">cloud_upload
+                            </i>
+                    </span>          
+                    </button>
+
+                       
+                </div>
 
                 <!-- si el archivo se  subio -->
                  <section  v-if="fileUploadedChecked"  class="file-uploaded  layout row">
@@ -102,6 +138,10 @@
         </div>
         
     </div>
+    </div>
+
+   
+  
 </template>
 
 <script>
@@ -152,6 +192,12 @@ export default {
              required : true,
              default : ""
          },
+        required : {
+            type : Boolean,
+            required : false,
+            defaults : false
+        }
+         
    
 
       },

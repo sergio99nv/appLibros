@@ -5,12 +5,17 @@
     max-width: 750px;
 }
 
-.book-info{
-     display: grid;
-     grid-template-columns: 100px 1fr;
-     grid-gap: 0 15px;
-     margin-bottom: 1rem;
+
+
+.book-info-desc__title{
+    margin-bottom: 3px;
 }
+
+
+.book-info-desc__author{
+    margin-bottom: 10px;
+}
+
 
 .book-actions{
     margin-bottom: 1rem;
@@ -20,12 +25,43 @@
     margin-top: 2rem;
 }
 
+.book-info{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    margin-bottom: 1rem;
+}
 
-@media only screen and (min-width: 900px) {
+.book-info-cover{
+    margin-bottom: 10px;
+}
+
+.book-info-cover img{
+    max-width: 140px;
+}
+
+@media only screen and (min-width: 565px) {
+
+    .book-info{
+        grid-template-columns: 130px auto;
+        grid-gap: 0 30px;
+       
+    }
+
+    .book-info-cover{
+        margin-bottom: 0;
+    }
+    
+}
+
+@media only screen and (min-width: 850px) {
+
+   
+
+
     .book-info-wrapper{
-        margin-left: 100px;
-        padding-right: 100px;
-        max-width: 900px;
+        /* margin-left: 100px;
+        padding-right: 100px; */
+        max-width: 850px;
     }
      
   }

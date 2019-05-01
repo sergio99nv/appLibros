@@ -8,15 +8,21 @@
       margin-bottom: 20px;
    }
 
+   .update-title{
+      justify-content: space-between;
+      align-items: center;
+   }
    
  </style>
 <template>
-   <div>
+    <div class="update">
         <div class="v-card v-sheet theme--light">
           
          <!-- titulo del formulario -->
-          <div class="v-card__title headline">
+          <div class="update-title v-card__title headline" v-show="!sendingFormData">
              <slot name="title-main"></slot>
+
+             <slot name="close-modal-x" ></slot>
           </div>
 
             <!-- mostar un error  -->
@@ -62,7 +68,7 @@
                               :show-img-miniature="item.type=='image' ? true : false"
                               :type="item.type"  
                               :label="item.label"
-                              
+                              :required="form[item.field].rules.required"
                               v-model="form[item.field].value"
                               :extensions="item.fileConfig.extensions"
                                v-on="form[item.field].error ? { '~inputChange': () => inputHideError(item.field) } : {}"

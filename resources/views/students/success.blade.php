@@ -14,7 +14,7 @@
                 href="/login"
                 class="v-btn theme--dark blue primary">
                     <div class="v-btn__content">
-                            Iniciar session
+                            Iniciar sesión
                     </div>
                 </a>
             </div>

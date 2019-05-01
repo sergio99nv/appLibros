@@ -6,19 +6,8 @@
  */
 
 require('@pathRoot/bootstrap');
-
-window.Vue = require('vue');
-
-import VueRouter from 'vue-router'
-Vue.use(VueRouter)
  
-
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-
-Vue.use(Vuetify)
  
-
 
 Vue.component('users', require('./users').default);
 const app = new Vue({

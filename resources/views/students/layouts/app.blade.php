@@ -11,7 +11,8 @@
 
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+       
+        <link href="/css/vuetify.min.css" rel="stylesheet">
         <link href="/css/app_main.css" rel="stylesheet">
         @yield('cssFile')
     </head>

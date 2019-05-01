@@ -24,6 +24,10 @@
         padding: 0 0;
         height: auto;
     }
+
+    th{
+          max-width: 80%;
+     }
 </style>
 
 <style scoped>
@@ -99,10 +103,16 @@
                     :fields-store="createData.fieldsStore"
                     :fields-hidden="createData.fieldsHidden">
                     <template slot="title-main">
-                        
-                        {{createData.titles.main || 'agregar'}} 
+                        <div> 
+                            {{createData.titles.main || 'agregar'}}     
+                        </div>  
                     </template> 
-                    
+                     <template slot="close-modal-x">
+                            <v-btn   @click="()=>  loadStoreComponent= !loadStoreComponent" 
+                                 flat icon color="grey">
+                              <v-icon>close</v-icon>
+                        </v-btn>  
+                    </template>                       
                      <template slot="close-modal">
                              <button    class="v-btn v-btn--flat     black--text " 
                                  @click="()=>  loadStoreComponent= !loadStoreComponent" >
@@ -114,7 +124,7 @@
                </v-dialog>  
         </div>
 
-        
+    <div class="v-table__overflow">
         <table  class="v-datatable v-table theme--light elevation-1">
             
            <slot name="fieldNames"></slot>
@@ -209,6 +219,14 @@
                                 </v-btn>
                             </template>
 
+
+                             <template slot="close-modal-x">
+                                    <v-btn    @click="()=>  loadUpdateComponent[itemData.id] = false"
+                                        flat icon color="grey">
+                                    <v-icon>close</v-icon>
+                                </v-btn>  
+                            </template>  
+
                             <template slot="title-main">
                                 {{updateData.titles.main || 'Actualizar'}}  
                             </template>
@@ -236,7 +254,7 @@
                 </tr>
             </tbody> 
         </table> 
- 
+ </div>
     </div>
 </template>
 
@@ -297,7 +315,8 @@
 
                 },
                 loadStoreComponent : 0,
-                loadUpdateComponent:{}
+                loadUpdateComponent:{},
+                loadingData: false
             }
         },
         mounted() {
@@ -318,8 +337,11 @@
                 if(token)  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 
                // const url = "/admins/users/getData";
+                this.loadingData = true;
                 axios.post(url, params).
                 then((response) => {
+
+                    this.loadingData = true;
                     const responseData = response.data;
                    
                     if(responseData.error === false){
@@ -334,6 +356,7 @@
                      
                 }).catch((err)=>{
                     console.log(err)
+                      this.loadingData = false;
                 })
                  
             },

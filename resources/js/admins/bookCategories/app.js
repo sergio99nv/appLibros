@@ -7,22 +7,12 @@
 
 require('@pathRoot/bootstrap');
 
-window.Vue = require('vue');
+
 
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
  
- 
- 
-
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-
-Vue.use(Vuetify)
- 
- 
-
- 
+  
 const routes = [
     {
        path: '/', 

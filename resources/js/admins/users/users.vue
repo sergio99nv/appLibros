@@ -13,6 +13,10 @@
             margin-bottom: 20px;
         }
         
+        .theme--light.application{
+            background-color: transparent!important;
+        }
+        
 </style>
 
 
@@ -21,6 +25,7 @@
 
         <div class="row">
              <h1>Usuarios administradores</h1>
+             <p>Listado de usuarios administradores</p>
         </div>
        <v-app>    
         <crud

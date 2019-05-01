@@ -46,7 +46,7 @@
             > 
                 <thead   slot="fieldNames">
                     <tr>
-                        <th class="text-sm-left">url</th>
+                        <th style="min-width:110px"  class="text-sm-left">url</th>
                         <th class="text-sm-left">abrir video</th>
                          <th class="text-sm-left">Acciones</th>
                     </tr>

@@ -10,6 +10,7 @@ use appLibros\Models\BookMdl;
 use Illuminate\Support\Facades\Validator;
 use Storage;
 use DB;
+use Session;
 
 
 class BookCtrl extends Controller
@@ -110,7 +111,7 @@ class BookCtrl extends Controller
         $rules = [
                  "bookCategoryId" => "required|integer",
                  "name" => "required|max:10000",
-                 "description" => "required|max:10000",
+                 "description" => "max:10000",
                  "author" => "required|max:10000",
                  "file" =>  "required",
                  "cover" =>  "nullable",
@@ -174,7 +175,7 @@ class BookCtrl extends Controller
         $rules = [
                  "id" => "required|integer",
                  "name" => "required|max:10000",
-                 "description" => "required|max:10000",
+                 "description" => "max:10000",
                  "author" => "required|max:10000",
                  "file" =>  "required",
                  "cover" =>  "nullable",
@@ -262,11 +263,14 @@ class BookCtrl extends Controller
           
         $extension =  $request->file('file')->extension();
 
-        $userId = "PEPE";
+        $userId = Session::get("userId");
         $fileName =  self::getTempFileName( $userId ). "." .$extension;
        
-        $folderPath = self::$fileConfig["file"]["folder"];
-        $request->file('file')->storeAs( $folderPath, $fileName);
+       // $folderPath = self::$fileConfig["file"]["folder"];
+       // $request->file('file')->storeAs( $folderPath, $fileName);
+
+       $folderPath = self::$fileConfig["file"]["folder"];
+       Storage::disk('public_uploads')->put("{$folderPath}/".$fileName, file_get_contents($request->file));
 
         return response()->json([
             'error' =>  false,
@@ -311,11 +315,13 @@ class BookCtrl extends Controller
           
         $extension =  $request->file('file')->extension();
 
-        $userId = "PEPE";
+        $userId = Session::get("userId");
         $fileName =  self::getTempFileName( $userId ). "." .$extension;
 
         $folderPath = self::$fileConfig["image"]["folder"];
-        $request->file('file')->storeAs( $folderPath, $fileName);
+        Storage::disk('public_uploads')->put("{$folderPath}/".$fileName, file_get_contents($request->file));
+
+
 
         return response()->json([
             'error' =>  false,
@@ -343,11 +349,11 @@ class BookCtrl extends Controller
      * @param String $userId el id de el usuario q sube el archivo
      * @return String el nombre temporal 
      */
-   private static function getTempFileName(string $userId) : string
+   private static function getTempFileName(int $userId) : string
    {
      $tempFileName = self::$fileConfig["tempFileName"];
 
-     $ramdonN = mt_rand(1,50000);
+     $ramdonN = mt_rand(1,100000);
      $date = date('Y_m_d__H_i_s');
 
      $tempName = $tempFileName."__".$userId."__".$ramdonN."__".$date;

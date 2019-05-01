@@ -27,7 +27,7 @@
                     <a class="main-menu-item-link" href="/admins/main">
                         
                         <i class="material-icons  main-menu-item-link__i">
-                            book
+                            home
                         </i>
 
                         <span>Inicio</span>
@@ -58,12 +58,28 @@
                     <a class="main-menu-item-link" href="/admins/users">
                         
                         <i class="material-icons  main-menu-item-link__i">
-                            book
+                        perm_identity
                         </i>
 
                         <span>Usuarios(admin)</span>
                     </a>
              </div>
+
+
+
+             <div class="v-navigation-drawer__border"></div>
+            <hr class="v-divider theme--light"> 
+            <div class="main-menu-item">
+                    <a class="main-menu-item-link" href="/admins/students">
+                        
+                        <i class="material-icons  main-menu-item-link__i">
+                        school
+                        </i>
+
+                        <span>Estudiantes</span>
+                    </a>
+             </div>
+               
                
             
 

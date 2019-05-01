@@ -88,11 +88,20 @@ Route::group(['prefix'=>'admins'], function(){
 
 
         Route::get('/main',  'Admins\MainCtrl@index');
-        //usuarios
+        //usuarios admin
         Route::group(['prefix'=>'users'], function(){
             Route::get('/',  'Admins\AdminCtrl@index');
             Route::post('/getAll',  'Admins\AdminCtrl@getAll');
         });
+
+
+         //estudiantes 
+         Route::group(['prefix'=>'students'], function(){
+            Route::get('/',  'Admins\StudentCtrl@index');
+            Route::post('/getAll',  'Admins\StudentCtrl@getAll');
+        });
+
+
 
 
         //categorias de libros

@@ -35,13 +35,14 @@ img{
  
 .navbar-fixed {
     position: relative;
-    z-index: 997;
+ 
 }
 
 
 .navbar-fixed nav {
     position: fixed;
     width: 100%;
+    z-index: 100;
 }
 
 
@@ -93,7 +94,7 @@ nav .nav-main-wrapper {
     margin-top: 0px;
     position: fixed;
     padding-top: 1rem;
-    z-index: 999;
+    z-index: 201;
     overflow-y: scroll;
 
     max-height: 100vh;
@@ -146,8 +147,7 @@ nav .nav-main-wrapper {
 
 .main-menu-list-data__item{
     padding-left: 17px;
-    margin-left: 5px;
-    border-left: 5px solid #c9d1db;
+    border-left: 3px solid #c9d1db;
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -155,6 +155,10 @@ nav .nav-main-wrapper {
 .main-menu-list-title{
     font-size: 1.3rem;
     color: var(--second-color-text);
+}
+
+.main-menu-list-data{
+    padding-bottom: 10px;
 }
 
 .asideMainMenu--open{
@@ -175,8 +179,9 @@ nav .nav-main-wrapper {
 }
 
 .v-overlay--absolute{
-    z-index: 997;
-    height: 100vh;
+    z-index: 200!important;
+    height: 100%;
+    position: fixed;
 }
 
 /* f-search */
@@ -263,10 +268,7 @@ nav .nav-main-wrapper {
         align-items: center;
     }
 
-    .nav-main-form{
-       
-        
-    }
+   
 
     .f-search-close{ 
         display: none;
@@ -301,7 +303,7 @@ nav .nav-main-wrapper {
 
     .main-menu{
         top : var(--nav-height);
-        z-index: 996;
+        
     }
 
     .main-menu:focus,
